@@ -1,2 +1,2 @@
 # teamProject24
-Team Project for Abilash &amp; Thomas
+Team Project for Abhilash &amp; Thomas
