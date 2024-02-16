@@ -67,29 +67,3 @@ function deleteMovie(movieId) {
     }
 }
 
-// function updateMovie() {
-//     let movieId = $("#movieIdNum").val();
-//     console.log(movieId);
-//     let title = $("#title").val();
-//     let language = $("#language").val();
-//     let releaseDate = $("#releaseDate").val();
-//     let genre = $("#genre").val();
-//     let runtime = $("#runtime").val();
-         
-//     
-//     $.post(
-//         "http://localhost:3000/movies/" + movieId, // URL to send the request to
-//         {
-//             "movieId": movieId,
-//             "title": title,
-//             "language": language,
-//             "releaseDate": releaseDate,
-//             "genre": genre,
-//             "runtime": runtime
-//         }, // Data to send in the request
-//         function(response) { 
-//             console.log("Movie updated successfully"); 
-//             
-//         }
-//     );
-// }
