@@ -27,7 +27,7 @@ exports.getMovies = function(req,res){
 
 // CREATE a movie
 exports.createMovie = function(req, res) {
-	var movieId = req.body.movieId;
+	//var movieId = req.body.movieId;
 	var title = req.body.title;
 	var language = req.body.language;
 	var releaseDate = req.body.releaseDate;
@@ -35,7 +35,7 @@ exports.createMovie = function(req, res) {
 	var runtime = req.body.runtime;
   
 	var query = "INSERT INTO movie (movieId, title, language, releaseDate, genre, runtime) VALUES (?, ?, ?, ?, ?, ?)";
-	connection.query(query, [movieId, title, language, releaseDate, genre, runtime], function(err, result) {
+	connection.query(query, [title, language, releaseDate, genre, runtime], function(err, result) {
 	  if (err) throw err;
 	  res.send("Movie created successfully");
 	});
