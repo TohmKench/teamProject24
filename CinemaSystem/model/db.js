@@ -87,3 +87,65 @@ exports.deleteMovie = function(req, res) {
     });
 };
 
+// getScreenings
+exports.getScreenings = function(req,res){
+
+	connection.query("SELECT * FROM `screen` ", function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+}
+
+// CREATE a Screening
+exports.createScreening = function(req, res) {
+	var movieId = req.body.movieId;
+	var startTime = req.body.title;
+	var endTime = req.body.language;
+	var theatreId = req.body.releaseDate;
+	var viewingId = req.body.genre;
+
+	var query = "INSERT INTO screen (movieId, startTime, endTime, theatreId, viewingId) VALUES (?, ?, ?, ?, ?)";
+	connection.query(query, [movieId, startTime, endTime, theatreId, viewingId], function(err, result) {
+	  if (err) throw err;
+	  res.send("Screening created successfully");
+	});
+  };
+
+
+    // UPDATE a screening
+exports.updateScreening = function(req, res) {
+	var movieId = req.body.movieId;
+	var startTime = req.body.title;
+	var endTime = req.body.language;
+	var theatreId = req.body.releaseDate;
+	var viewingId = req.body.genre;
+	var query = "UPDATE movie SET startTime=?, endTime=?, theatreId=?, movieId=? WHERE viewingID=?";
+	connection.query(query, [movieId, startTime, endTime, theatreId, viewingId], function(err, result) {
+		if (err) {
+            console.error("Error updating screening:", err);
+            res.status(500).send("Error updating screening");
+        } else {
+            console.log("Screening updated successfully");
+            res.send("Screening updated successfully");
+        }
+	});
+  };
+
+  // deleteScreening
+exports.deleteScreening = function(req, res) {
+    var movieId = req.body.movieId;
+
+    var query = "DELETE FROM screening WHERE viewingId = ?";
+    connection.query(query, [viewingId], function(err, result) {
+        if (err) {
+            console.error("Error deleting screening:", err);
+            res.status(500).send("Error deleting screening");
+        } else {
+            console.log("Screening deleted successfully");
+            res.send("Screening deleted successfully");
+        }
+    });
+};
