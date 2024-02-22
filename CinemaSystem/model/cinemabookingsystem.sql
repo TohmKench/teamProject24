@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `booking` (
-  `bookingId` int NOT NULL,
+  `bookingId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `bookingDate` date DEFAULT NULL,
   `totalCost` double DEFAULT NULL,
   `Seats` int DEFAULT NULL,
   `screenId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -42,13 +42,13 @@ CREATE TABLE `booking` (
 --
 
 CREATE TABLE `movie` (
-  `movieId` int NOT NULL,
+  `movieId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `title` varchar(255) DEFAULT NULL,
   `description` text,
   `releaseDate` date DEFAULT NULL,
   `genre` varchar(255) DEFAULT NULL,
   `runtime` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `movie`
@@ -66,12 +66,12 @@ INSERT INTO `movie` (`movieId`, `title`, `description`, `releaseDate`, `genre`, 
 --
 
 CREATE TABLE `screen` (
-  `viewingId` int NOT NULL,
+  `viewingId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `movieId` int DEFAULT NULL,
   `startTime` datetime DEFAULT NULL,
   `endTime` datetime DEFAULT NULL,
   `theaterId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `screen`
@@ -89,10 +89,10 @@ INSERT INTO `screen` (`viewingId`, `movieId`, `startTime`, `endTime`, `theaterId
 --
 
 CREATE TABLE `seat` (
-  `seatNumber` int NOT NULL,
+  `seatNumber` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `availability` tinyint(1) DEFAULT NULL,
   `screenId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `seat`
@@ -116,9 +116,9 @@ INSERT INTO `seat` (`seatNumber`, `availability`, `screenId`) VALUES
 --
 
 CREATE TABLE `theatre` (
-  `screenNumber` int NOT NULL,
+  `screenNumber` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `totalSeats` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `theatre`
@@ -136,11 +136,11 @@ INSERT INTO `theatre` (`screenNumber`, `totalSeats`) VALUES
 --
 
 CREATE TABLE `ticket` (
-  `ticketId` int NOT NULL,
+  `ticketId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `cost` double DEFAULT NULL,
   `ticketType` varchar(255) DEFAULT NULL,
   `bookingId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
