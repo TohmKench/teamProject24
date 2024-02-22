@@ -40,6 +40,17 @@ app.post("/deleteMovie", function (req, res)
   db.deleteMovie(req, res);
 });
 
+app.get("/screenings", function (req, res) {
+  db.getScreenings(req, res);
+});
+
+// Update a movie
+app.post("/updateScreening", function (req, res) {
+  db.updateScreening(req,res);
+  //res.send(201);
+     
+});
+
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
 });
