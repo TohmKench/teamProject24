@@ -15,18 +15,31 @@
 <body>
     <header class="bg-dark text-white py-4">
         <div class="container">
-            <h1 class="text-center">Welcome to our Cinema System</h1>
+            <h1 class="text-center">Create A Screening</h1>
         </div>
     </header>
     <div id="myDiv">
         <script src="js/Sharednav.js"></script></div>
-    <section class="py-5">
-        <div class="container">
-            <h2 class="text-center">Latest Movies</h2>
-            <p class="text-center">Discover the newest releases and upcoming attractions.</p>
-            <p class="text-center">Book your tickets now!</p>
-        </div>
-    </section>
+        <hr>
+        <button class="btn btn-primary" onclick='window.location.href = "createScreenings.html"'>Create Movie</button>
+        <table class="table" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Language</th>
+                <th>Release date</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        
+        <tbody id ="displayScreenings">
+        
+        </tbody>
+        </table>
+        
+        <hr>
 
     <footer class="bg-dark text-white py-3">
         <div class="container text-center">

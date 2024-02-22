@@ -5,10 +5,10 @@ $("#myDiv").append(`
 <div class="container">
     <ul class="nav justify-content-center">
         <li class="nav-item"><a class="nav-link text-white" href="home.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Movies</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Schedule</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Tickets</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Contact Us</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="movies.html">Movies</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="screenings.html">Screnings</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="screeningsByDate.html">Today's Screenings</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="logIn.html">Log in</a></li>
     </ul>
 </div>
 </nav>`
