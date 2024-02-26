@@ -1,7 +1,6 @@
 $("document").ready(function() {
 
     displayScreenings();
-    
  });
  
  
@@ -12,56 +11,86 @@ $("document").ready(function() {
         var output;
         for(var i=0;i < data.length;i++)
         {
-            
+            var startTime = new Date(data[i].startTime);
+            var startDate = startTime.toDateString();
+            var startTimeString = startTime.toLocaleTimeString();
+
             output += `<tr>`;
-            output += `<td>${i+1}</td>`;
+            output += `<td>${i + 1}</td>`;
             output += `<td>${data[i].title}</td>`;
-            output += `<td>${data[i].language}</td>`;
-            output += `<td>${data[i].releaseDate}</td>`;
-            output += `<td><button class="btn btn-primary" onclick='editMovie(${data[i].movieId})'>Edit Movie</button></td>`;
-            output += `<td><button class="btn btn-primary" onclick='deleteMovie(${data[i].movieId})'>Delete Movie</button></td>`;
-            output += `</tr>`;   
+            output += `<td>${startTimeString}</td>`;
+            output += `<td>${startDate}</td>`;
+            output += `<td>${data[i].screenId}</td>`;
+            output += `<td>${data[i].seatsRemaining}</td>`;
+            output += `</tr>`;
         }
 
-        $("#displayMovies").append(output);
+        $("#displayScreenings").append(output);
       });
- 
+      
+      $.getJSON("http://localhost:3000/screenings", function (data) {
+        
+        for (var i = 0; i < data.length; i++) {
+            $("#movieSelect").append("<option>" + data[i].title + "</option>");
+            $("#screenSelect").append("<option>" + data[i].screenId + "</option>");
+            
+        }
+
+    });
+      
  }
 
- function addMovie() {
+ function addScreening() {
+    let startTime = $("#startTime").val();
+    let startDate = $("#startDate").val(); 
+    let screenId = $("#screenId").val(); 
+    let seatsRemaining = $("#seatsRemaining").val(); 
+    let theatreId = $("#theatreId").val(); 
+    let endTime = "2024-02-10T21:55:00.000Z"; 
     let movieId = $("#movieId").val();
-    let title = $("#title").val();
-    let language = $("#language").val(); 
-    let releaseDate = $("#releaseDate").val(); 
-    let genre = $("#genre").val();
-    let runtime = $("#runtime").val();
 
+    let dateTime = startDate + " " + startTime;
+
+    
+    
     $.post(
-        "http://localhost:3000/movies", 
-        { "movieId": movieId, "title": title, "language": language, "releaseDate": releaseDate, "genre": genre, "runtime": runtime }, // Data to send in the request
+        "http://localhost:3000/createScreening", 
+        { "screenId": screenId, "movieId": movieId, "startTime": dateTime, "seatsRemaining": seatsRemaining, "theatreId": theatreId, "endTime":endTime }, // Use formattedDateTime
         function(data) { 
-            window.location.href="http://localhost:3000/movies.html";
-            console.log("Movie added successfully"); 
-            
+            window.location.href="http://localhost:3000/screenings.html";
+            console.log("Screening added successfully"); 
         }
     );
 }
 
-function editMovie(movieId) {
+// $("document").ready(function() {
+//     $('#startTime').timepicker({
+//         // You can customize the timepicker options here
+//         // For example:
+//         // defaultTime: '10:00 AM',
+//         // showMeridian: false
 
-    window.location.href = "editMovie.html?id=" + movieId;
-    console.log(movieId);
+//         defaultTime: '12:00 PM'
+//     });
+// });
+
+
+
+function editScreening(screenId) {
+
+    window.location.href = "editScreening.html?id=" + screenId;
+    console.log(screenId);
 
 }
 
-function deleteMovie(movieId) {
+function deleteMovie(screenId) {
     if (confirm("Are you sure you want to delete this movie?")) {
         $.post(
-            "http://localhost:3000/deleteMovie",
-            {"movieId":movieId},
+            "http://localhost:3000/deleteScreening",
+            {"screenId":screenId},
             function(response) {
-                alert("Movie deleted successfully");
-                window.location.href="http://localhost:3000/movies.html";
+                alert("Screenings deleted successfully");
+                window.location.href="http://localhost:3000/screenings.html";
             }
         );
     }
