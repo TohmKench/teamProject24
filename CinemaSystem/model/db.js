@@ -27,7 +27,7 @@ exports.getMovies = function(req,res){
 
 // CREATE a movie
 exports.createMovie = function(req, res) {
-	//var movieId = req.body.movieId;
+	var movieId = req.body.movieId;
 	var title = req.body.title;
 	var language = req.body.language;
 	var releaseDate = req.body.releaseDate;
@@ -35,7 +35,7 @@ exports.createMovie = function(req, res) {
 	var runtime = req.body.runtime;
   
 	var query = "INSERT INTO movie (movieId, title, language, releaseDate, genre, runtime) VALUES (?, ?, ?, ?, ?, ?)";
-	connection.query(query, [title, language, releaseDate, genre, runtime], function(err, result) {
+	connection.query(query, [movieId, title, language, releaseDate, genre, runtime], function(err, result) {
 	  if (err) throw err;
 	  res.send("Movie created successfully");
 	});
@@ -90,7 +90,7 @@ exports.deleteMovie = function(req, res) {
 // getScreenings
 exports.getScreenings = function(req,res){
 
-	connection.query("SELECT * FROM `screen` ", function(err, rows, fields) {
+	connection.query("SELECT screen.*, movie.title FROM screen JOIN movie ON screen.movieId = movie.movieId", function(err, rows, fields) {
 	  if (err) throw err;
 
 	  res.send(JSON.stringify(rows));
@@ -102,13 +102,15 @@ exports.getScreenings = function(req,res){
 // CREATE a Screening
 exports.createScreening = function(req, res) {
 	var movieId = req.body.movieId;
-	var startTime = req.body.title;
-	var endTime = req.body.language;
-	var theatreId = req.body.releaseDate;
-	var viewingId = req.body.genre;
+	var startTime = req.body.startTime;
+	var endTime = req.body.endTime;
+	var theatreId = req.body.theatreId;
+	var screenId = req.body.screenId;
+	var seatsRemaining = req.body.seatsRemaining;
 
-	var query = "INSERT INTO screen (movieId, startTime, endTime, theatreId, viewingId) VALUES (?, ?, ?, ?, ?)";
-	connection.query(query, [movieId, startTime, endTime, theatreId, viewingId], function(err, result) {
+
+	var query = "INSERT INTO screen (movieId, startTime, endTime, theatreId, screenId, seatsRemaining) VALUES (?, ?, ?, ?, ?, ?)";
+	connection.query(query, [movieId, startTime, endTime, theatreId, screenId, seatsRemaining], function(err, result) {
 	  if (err) throw err;
 	  res.send("Screening created successfully");
 	});
@@ -118,12 +120,10 @@ exports.createScreening = function(req, res) {
     // UPDATE a screening
 exports.updateScreening = function(req, res) {
 	var movieId = req.body.movieId;
-	var startTime = req.body.title;
-	var endTime = req.body.language;
-	var theatreId = req.body.releaseDate;
-	var viewingId = req.body.genre;
-	var query = "UPDATE movie SET startTime=?, endTime=?, theatreId=?, movieId=? WHERE viewingID=?";
-	connection.query(query, [movieId, startTime, endTime, theatreId, viewingId], function(err, result) {
+	var startTime = req.body.startTime;
+	var endTime = req.body.endTime;
+	var query = "UPDATE movie SET startTime=?, endTime=?, movieId=? WHERE screenId=?";
+	connection.query(query, [movieId, startTime, endTime, screenId], function(err, result) {
 		if (err) {
             console.error("Error updating screening:", err);
             res.status(500).send("Error updating screening");
@@ -136,9 +136,9 @@ exports.updateScreening = function(req, res) {
 
   // deleteScreening
 exports.deleteScreening = function(req, res) {
-    var movieId = req.body.movieId;
+    var screenId = req.body.screenId;
 
-    var query = "DELETE FROM screening WHERE viewingId = ?";
+    var query = "DELETE FROM screening WHERE screenId = ?";
     connection.query(query, [viewingId], function(err, result) {
         if (err) {
             console.error("Error deleting screening:", err);

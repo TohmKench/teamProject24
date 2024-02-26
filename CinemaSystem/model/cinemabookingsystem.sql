@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2024 at 06:13 PM
+-- Generation Time: Feb 22, 2024 at 06:01 PM
 -- Server version: 8.0.32
 -- PHP Version: 7.4.29
 
@@ -28,12 +28,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `booking` (
-  `bookingId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `bookingId` int NOT NULL,
   `bookingDate` date DEFAULT NULL,
   `totalCost` double DEFAULT NULL,
-  `Seats` int DEFAULT NULL,
-  `screenId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `seats` int DEFAULT NULL,
+  `emailAddress` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`bookingId`, `bookingDate`, `totalCost`, `seats`, `emailAddress`) VALUES
+(1, '2024-02-09', 25.5, 2, 'john@email.com'),
+(2, '2024-02-10', 30.75, 3, 'doe@email.com'),
+(3, '2024-02-11', 15.25, 1, 'alan@email.com');
 
 -- --------------------------------------------------------
 
@@ -42,22 +51,23 @@ CREATE TABLE `booking` (
 --
 
 CREATE TABLE `movie` (
-  `movieId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `movieId` int NOT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `description` text,
+  `language` varchar(50) DEFAULT NULL,
   `releaseDate` date DEFAULT NULL,
-  `genre` varchar(255) DEFAULT NULL,
+  `genre` varchar(50) DEFAULT NULL,
   `runtime` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `movie`
 --
 
-INSERT INTO `movie` (`movieId`, `title`, `description`, `releaseDate`, `genre`, `runtime`) VALUES
-(1, 'Jurassic Park', 'During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok.', '1993-06-11', 'Adventure', 127),
-(2, 'The Avengers', 'Earth\'s mightiest heroes must come together and learn to fight as a team if they are going to stop the mischievous Loki and his alien army from enslaving humanity.', '2012-05-04', 'Action', 143),
-(3, 'Forrest Gump', 'The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.', '1994-07-06', 'Drama', 142);
+INSERT INTO `movie` (`movieId`, `title`, `language`, `releaseDate`, `genre`, `runtime`) VALUES
+(1, 'Avengers', 'English', '2012-10-14', 'Action', 142),
+(2, 'The Godfather', 'English', '1972-03-24', 'Crime', 175),
+(7, 'BroBoFoM', 'English', '2024-02-14', 'Sci fi', 180),
+(8, 'The Batman', 'English', '2022-11-22', 'Action', 190);
 
 -- --------------------------------------------------------
 
@@ -66,48 +76,22 @@ INSERT INTO `movie` (`movieId`, `title`, `description`, `releaseDate`, `genre`, 
 --
 
 CREATE TABLE `screen` (
-  `viewingId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `movieId` int DEFAULT NULL,
+  `screenId` int NOT NULL,
+  `movieId` int NOT NULL,
   `startTime` datetime DEFAULT NULL,
   `endTime` datetime DEFAULT NULL,
-  `theaterId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `seatsRemaining` int DEFAULT NULL,
+  `theatreId` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `screen`
 --
 
-INSERT INTO `screen` (`viewingId`, `movieId`, `startTime`, `endTime`, `theaterId`) VALUES
-(101, 1, '2024-02-08 18:00:00', '2024-02-08 20:16:00', 1),
-(102, 2, '2024-02-08 17:30:00', '2024-02-08 20:18:00', 2),
-(103, 3, '2024-02-08 19:00:00', '2024-02-08 21:22:00', 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `seat`
---
-
-CREATE TABLE `seat` (
-  `seatNumber` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `availability` tinyint(1) DEFAULT NULL,
-  `screenId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `seat`
---
-
-INSERT INTO `seat` (`seatNumber`, `availability`, `screenId`) VALUES
-(1, 1, 101),
-(2, 0, 101),
-(3, 1, 101),
-(4, 1, 102),
-(5, 1, 102),
-(6, 1, 102),
-(7, 1, 103),
-(8, 1, 103),
-(9, 0, 103);
+INSERT INTO `screen` (`screenId`, `movieId`, `startTime`, `endTime`, `seatsRemaining`, `theatreId`) VALUES
+(1, 1, '2024-02-09 18:00:00', '2024-02-09 20:30:00', 90, 1),
+(2, 2, '2024-02-10 19:00:00', '2024-02-10 21:55:00', 120, 2),
+(3, 3, '2024-02-11 17:30:00', '2024-02-11 20:00:00', 180, 3);
 
 -- --------------------------------------------------------
 
@@ -116,18 +100,18 @@ INSERT INTO `seat` (`seatNumber`, `availability`, `screenId`) VALUES
 --
 
 CREATE TABLE `theatre` (
-  `screenNumber` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `totalSeats` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `theatreId` int NOT NULL,
+  `capacity` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `theatre`
 --
 
-INSERT INTO `theatre` (`screenNumber`, `totalSeats`) VALUES
-(1, 120),
-(2, 150),
-(3, 80);
+INSERT INTO `theatre` (`theatreId`, `capacity`) VALUES
+(1, 100),
+(2, 200),
+(3, 150);
 
 -- --------------------------------------------------------
 
@@ -136,11 +120,40 @@ INSERT INTO `theatre` (`screenNumber`, `totalSeats`) VALUES
 --
 
 CREATE TABLE `ticket` (
-  `ticketId` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `cost` double DEFAULT NULL,
-  `ticketType` varchar(255) DEFAULT NULL,
-  `bookingId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ticketNo` int NOT NULL,
+  `bookingId` int DEFAULT NULL,
+  `screenId` int DEFAULT NULL,
+  `ticketType` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`ticketNo`, `bookingId`, `screenId`, `ticketType`) VALUES
+(1, 1, 1, 'Adult'),
+(2, 2, 2, 'Student'),
+(3, 3, 3, 'Senior');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tickettype`
+--
+
+CREATE TABLE `tickettype` (
+  `typeId` int NOT NULL,
+  `typeName` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tickettype`
+--
+
+INSERT INTO `tickettype` (`typeId`, `typeName`) VALUES
+(1, 'Adult'),
+(2, 'Student'),
+(3, 'Senior');
 
 --
 -- Indexes for dumped tables
@@ -150,8 +163,7 @@ CREATE TABLE `ticket` (
 -- Indexes for table `booking`
 --
 ALTER TABLE `booking`
-  ADD PRIMARY KEY (`bookingId`),
-  ADD KEY `screenId` (`screenId`);
+  ADD PRIMARY KEY (`bookingId`);
 
 --
 -- Indexes for table `movie`
@@ -163,29 +175,29 @@ ALTER TABLE `movie`
 -- Indexes for table `screen`
 --
 ALTER TABLE `screen`
-  ADD PRIMARY KEY (`viewingId`),
-  ADD KEY `movieId` (`movieId`),
-  ADD KEY `theaterId` (`theaterId`);
-
---
--- Indexes for table `seat`
---
-ALTER TABLE `seat`
-  ADD PRIMARY KEY (`seatNumber`),
-  ADD KEY `screenId` (`screenId`);
+  ADD PRIMARY KEY (`screenId`),
+  ADD KEY `screen_ibfk_1` (`movieId`),
+  ADD KEY `fk_screen_theatre` (`theatreId`);
 
 --
 -- Indexes for table `theatre`
 --
 ALTER TABLE `theatre`
-  ADD PRIMARY KEY (`screenNumber`);
+  ADD PRIMARY KEY (`theatreId`);
 
 --
 -- Indexes for table `ticket`
 --
 ALTER TABLE `ticket`
-  ADD PRIMARY KEY (`ticketId`),
-  ADD KEY `bookingId` (`bookingId`);
+  ADD PRIMARY KEY (`ticketNo`),
+  ADD KEY `bookingId` (`bookingId`),
+  ADD KEY `screenId` (`screenId`);
+
+--
+-- Indexes for table `tickettype`
+--
+ALTER TABLE `tickettype`
+  ADD PRIMARY KEY (`typeId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -195,42 +207,30 @@ ALTER TABLE `ticket`
 -- AUTO_INCREMENT for table `movie`
 --
 ALTER TABLE `movie`
-  MODIFY `movieId` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `movieId` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `ticket`
+-- AUTO_INCREMENT for table `screen`
 --
-ALTER TABLE `ticket`
-  MODIFY `ticketId` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `screen`
+  MODIFY `movieId` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `booking`
---
-ALTER TABLE `booking`
-  ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`screenId`) REFERENCES `screen` (`viewingId`);
-
---
 -- Constraints for table `screen`
 --
 ALTER TABLE `screen`
-  ADD CONSTRAINT `screen_ibfk_1` FOREIGN KEY (`movieId`) REFERENCES `movie` (`movieId`),
-  ADD CONSTRAINT `screen_ibfk_2` FOREIGN KEY (`theaterId`) REFERENCES `theatre` (`screenNumber`);
-
---
--- Constraints for table `seat`
---
-ALTER TABLE `seat`
-  ADD CONSTRAINT `seat_ibfk_1` FOREIGN KEY (`screenId`) REFERENCES `screen` (`viewingId`);
+  ADD CONSTRAINT `fk_screen_theatre` FOREIGN KEY (`theatreId`) REFERENCES `theatre` (`theatreId`);
 
 --
 -- Constraints for table `ticket`
 --
 ALTER TABLE `ticket`
-  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`bookingId`) REFERENCES `booking` (`bookingId`);
+  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`bookingId`) REFERENCES `booking` (`bookingId`),
+  ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`screenId`) REFERENCES `screen` (`screenId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
