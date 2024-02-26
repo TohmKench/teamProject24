@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--Needed scripts for styling and CSS, do not remove, and bring to other pages if made-->
-    
+    <script src="js/screenings.js"></script>
+
 </head>
 <body>
     <header class="bg-dark text-white py-4">
@@ -21,15 +22,17 @@
     <div id="myDiv">
         <script src="js/Sharednav.js"></script></div>
         <hr>
-        <button class="btn btn-primary" onclick='window.location.href = "createScreenings.html"'>Create Movie</button>
+        <button class="btn btn-primary" onclick='window.location.href = "createScreenings.html"'>Create Screening</button>
         <table class="table" style="width:100%">
         <thead>
             <tr>
                 <th></th>
                 <th>Name</th>
-                <th>Language</th>
-                <th>Release date</th>
-                <th></th>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Screen Number</th>
+                <th>Seats Remaining</th>
+
                 <th></th>
             </tr>
         </thead>
