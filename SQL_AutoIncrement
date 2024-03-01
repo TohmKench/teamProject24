@@ -1,0 +1,7 @@
+-- Drop the foreign key constraint referencing screenId in the ticket table
+ALTER TABLE `ticket`
+  DROP FOREIGN KEY `ticket_ibfk_2`;
+
+ALTER TABLE `screen`
+  CHANGE COLUMN `screenId` `screenId` INT NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 4;
