@@ -12,15 +12,20 @@ $("document").ready(function() {
         var output;
         for(var i=0;i < data.length;i++)
         {
-            
+            var startTime = new Date(data[i].startTime);
+            var startDate = startTime.toDateString();
+            var startTimeString = startTime.toLocaleTimeString();
+
             output += `<tr>`;
-            output += `<td>${i+1}</td>`;
+            output += `<td>${i + 1}</td>`;
             output += `<td>${data[i].title}</td>`;
-            output += `<td>${data[i].language}</td>`;
-            output += `<td>${data[i].releaseDate}</td>`;
-            output += `<td><button class="btn btn-primary" onclick='editMovie(${data[i].movieId})'>Edit Movie</button></td>`;
-            output += `<td><button class="btn btn-primary" onclick='deleteMovie(${data[i].movieId})'>Delete Movie</button></td>`;
-            output += `</tr>`;   
+            output += `<td>${startTimeString}</td>`;
+            output += `<td>${startDate}</td>`;
+            output += `<td>${data[i].screenId}</td>`;
+            output += `<td>${data[i].seatsRemaining}</td>`;
+            output += `<td><button class="btn btn-primary" onclick='editScreening(${data[i].screenId})'>Edit Screening</button></td>`;
+            output += `<td><button class="btn btn-primary" onclick='deleteScreening(${data[i].screenIdId})'>Delete Screening</button></td>`;
+            output += `</tr>`;
         }
 
         $("#displayMovies").append(output);
@@ -65,16 +70,9 @@ function populateDrpDwn()
     }
 });
 }
-function deleteMovie(movieId) {
-    if (confirm("Are you sure you want to delete this movie?")) {
-        $.post(
-            "http://localhost:3000/deleteMovie",
-            {"movieId":movieId},
-            function(response) {
-                alert("Movie deleted successfully");
-                window.location.href="http://localhost:3000/movies.html";
-            }
-        );
-    }
-}
 
+function editScreening(screenId) {
+
+    window.location.href = "editScreening.html?id=" + screenId;
+    console.log(screenId);
+}

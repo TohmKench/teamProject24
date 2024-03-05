@@ -117,22 +117,37 @@ exports.createScreening = function(req, res) {
   };
 
 
-    // UPDATE a screening
-exports.updateScreening = function(req, res) {
+  // UPDATE a screening
+  exports.updateScreening = function(req, res) {
+	var screenId = req.body.screenId;
 	var movieId = req.body.movieId;
 	var startTime = req.body.startTime;
 	var endTime = req.body.endTime;
-	var query = "UPDATE movie SET startTime=?, endTime=?, movieId=? WHERE screenId=?";
-	connection.query(query, [movieId, startTime, endTime, screenId], function(err, result) {
+	var theatreId = req.body.theatreId;
+	var seatsRemaining = req.body.seatsRemaining;
+
+	var query = "UPDATE screen SET movieId=?, startTime=?, endTime=?, seatsRemaining=?, theatreId=? WHERE screenId=?";
+	connection.query(query, [movieId, startTime, endTime, seatsRemaining, theatreId, screenId], function(err, result) {
 		if (err) {
-            console.error("Error updating screening:", err);
-            res.status(500).send("Error updating screening");
+            console.error("Error updating movie:", err);
+            res.status(500).send("Error updating movie");
         } else {
-            console.log("Screening updated successfully");
-            res.send("Screening updated successfully");
+            console.log("Screen updated successfully");
+            res.send("Screen updated successfully");
         }
 	});
   };
+
+     // getSpecificScreening
+exports.getSpecificScreening = function(req,res,id ){
+	connection.query(`SELECT * FROM screen WHERE screenId = ?`,[id] ,function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+ }
 
   // deleteScreening
 exports.deleteScreening = function(req, res) {
