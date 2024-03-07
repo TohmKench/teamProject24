@@ -150,17 +150,27 @@ exports.getSpecificScreening = function(req,res,id ){
  }
 
   // deleteScreening
-exports.deleteScreening = function(req, res) {
+  exports.deleteScreening = function(req, res) {
     var screenId = req.body.screenId;
 
-    var query = "DELETE FROM screening WHERE screenId = ?";
-    connection.query(query, [viewingId], function(err, result) {
-        if (err) {
-            console.error("Error deleting screening:", err);
-            res.status(500).send("Error deleting screening");
+    // Deleting ticket first
+    var deleteTicketsQuery = "DELETE FROM ticket WHERE screenId = ?";
+    connection.query(deleteTicketsQuery, [screenId], function(ticketErr, ticketResult) {
+        if (ticketErr) {
+            console.error("Error deleting tickets for screening:", ticketErr);
+            res.status(500).send("Error deleting tickets for screening");
         } else {
-            console.log("Screening deleted successfully");
-            res.send("Screening deleted successfully");
+            // Deleting the screening
+            var deleteScreenQuery = "DELETE FROM screen WHERE screenId = ?";
+            connection.query(deleteScreenQuery, [screenId], function(screenErr, screenResult) {
+                if (screenErr) {
+                    console.error("Error deleting screening:", screenErr);
+                    res.status(500).send("Error deleting screening");
+                } else {
+                    console.log("Screening deleted successfully");
+                    res.send("Screening deleted successfully");
+                }
+            });
         }
     });
 };
