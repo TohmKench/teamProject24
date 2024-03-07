@@ -90,7 +90,7 @@ exports.deleteMovie = function(req, res) {
 // getScreenings
 exports.getScreenings = function(req,res){
 
-	connection.query("SELECT screen.*, movie.title FROM screen JOIN movie ON screen.movieId = movie.movieId", function(err, rows, fields) {
+	connection.query("SELECT * FROM `screen` ", function(err, rows, fields) {
 	  if (err) throw err;
 
 	  res.send(JSON.stringify(rows));
@@ -102,75 +102,50 @@ exports.getScreenings = function(req,res){
 // CREATE a Screening
 exports.createScreening = function(req, res) {
 	var movieId = req.body.movieId;
-	var startTime = req.body.startTime;
-	var endTime = req.body.endTime;
-	var theatreId = req.body.theatreId;
-	var screenId = req.body.screenId;
-	var seatsRemaining = req.body.seatsRemaining;
+	var startTime = req.body.title;
+	var endTime = req.body.language;
+	var theatreId = req.body.releaseDate;
+	var viewingId = req.body.genre;
 
-
-	var query = "INSERT INTO screen (movieId, startTime, endTime, theatreId, screenId, seatsRemaining) VALUES (?, ?, ?, ?, ?, ?)";
-	connection.query(query, [movieId, startTime, endTime, theatreId, screenId, seatsRemaining], function(err, result) {
+	var query = "INSERT INTO screen (movieId, startTime, endTime, theatreId, viewingId) VALUES (?, ?, ?, ?, ?)";
+	connection.query(query, [movieId, startTime, endTime, theatreId, viewingId], function(err, result) {
 	  if (err) throw err;
 	  res.send("Screening created successfully");
 	});
   };
 
 
-  // UPDATE a screening
-  exports.updateScreening = function(req, res) {
-	var screenId = req.body.screenId;
+    // UPDATE a screening
+exports.updateScreening = function(req, res) {
 	var movieId = req.body.movieId;
-	var startTime = req.body.startTime;
-	var endTime = req.body.endTime;
-	var theatreId = req.body.theatreId;
-	var seatsRemaining = req.body.seatsRemaining;
-
-	var query = "UPDATE screen SET movieId=?, startTime=?, endTime=?, seatsRemaining=?, theatreId=? WHERE screenId=?";
-	connection.query(query, [movieId, startTime, endTime, seatsRemaining, theatreId, screenId], function(err, result) {
+	var startTime = req.body.title;
+	var endTime = req.body.language;
+	var theatreId = req.body.releaseDate;
+	var viewingId = req.body.genre;
+	var query = "UPDATE movie SET startTime=?, endTime=?, theatreId=?, movieId=? WHERE viewingID=?";
+	connection.query(query, [movieId, startTime, endTime, theatreId, viewingId], function(err, result) {
 		if (err) {
-            console.error("Error updating movie:", err);
-            res.status(500).send("Error updating movie");
+            console.error("Error updating screening:", err);
+            res.status(500).send("Error updating screening");
         } else {
-            console.log("Screen updated successfully");
-            res.send("Screen updated successfully");
+            console.log("Screening updated successfully");
+            res.send("Screening updated successfully");
         }
 	});
   };
 
-     // getSpecificScreening
-exports.getSpecificScreening = function(req,res,id ){
-	connection.query(`SELECT * FROM screen WHERE screenId = ?`,[id] ,function(err, rows, fields) {
-	  if (err) throw err;
-
-	  res.send(JSON.stringify(rows));
-	  
-	});
-	
- }
-
   // deleteScreening
-  exports.deleteScreening = function(req, res) {
-    var screenId = req.body.screenId;
+exports.deleteScreening = function(req, res) {
+    var movieId = req.body.movieId;
 
-    // Deleting ticket first
-    var deleteTicketsQuery = "DELETE FROM ticket WHERE screenId = ?";
-    connection.query(deleteTicketsQuery, [screenId], function(ticketErr, ticketResult) {
-        if (ticketErr) {
-            console.error("Error deleting tickets for screening:", ticketErr);
-            res.status(500).send("Error deleting tickets for screening");
+    var query = "DELETE FROM screening WHERE viewingId = ?";
+    connection.query(query, [viewingId], function(err, result) {
+        if (err) {
+            console.error("Error deleting screening:", err);
+            res.status(500).send("Error deleting screening");
         } else {
-            // Deleting the screening
-            var deleteScreenQuery = "DELETE FROM screen WHERE screenId = ?";
-            connection.query(deleteScreenQuery, [screenId], function(screenErr, screenResult) {
-                if (screenErr) {
-                    console.error("Error deleting screening:", screenErr);
-                    res.status(500).send("Error deleting screening");
-                } else {
-                    console.log("Screening deleted successfully");
-                    res.send("Screening deleted successfully");
-                }
-            });
+            console.log("Screening deleted successfully");
+            res.send("Screening deleted successfully");
         }
     });
 };
