@@ -28,44 +28,53 @@ $("document").ready(function() {
             output += `</tr>`;
         }
 
-        $("#displayMovies").append(output);
+        $("#displayScreenings").append(output);
       });
- 
+      
+      $.getJSON("http://localhost:3000/screenings", function (data) {
+        
+        for (var i = 0; i < data.length; i++) {
+          //  $("#movieSelect").append("<option>" + data[i].title + "</option>");
+            $("#screenSelect").append("<option>" + data[i].screenId + "</option>");
+            
+        }
+
+    });
+      
  }
 
- function addMovie() {
+ function addScreening() {
+    let startTime = $("#startTime").val();
+    let startDate = $("#startDate").val(); 
+   // let screenId = $("#screenId").val(); 
+    let seatsRemaining = $("#seatsRemaining").val(); 
+    let theatreId = $("#theatreId").val(); 
+    let endTime = "2024-02-10T21:55:00.000Z"; 
     let movieId = $("#movieId").val();
-    let title = $("#title").val();
-    let language = $("#language").val(); 
-    let releaseDate = $("#releaseDate").val(); 
-    let genre = $("#genre").val();
-    let runtime = $("#runtime").val();
 
+    let dateTime = startDate + " " + startTime;
+
+  
+    
     $.post(
-        "http://localhost:3000/movies", 
-        { "movieId": movieId, "title": title, "language": language, "releaseDate": releaseDate, "genre": genre, "runtime": runtime }, // Data to send in the request
+        "http://localhost:3000/createScreening", 
+        { "movieId": movieId, "startTime": dateTime, "seatsRemaining": seatsRemaining, "theatreId": theatreId, "endTime":endTime }, // Use formattedDateTime
         function(data) { 
-            window.location.href="http://localhost:3000/movies.html";
-            console.log("Movie added successfully"); 
-            
+            window.location.href="http://localhost:3000/screenings.html";
+            console.log("Screening added successfully"); 
         }
     );
 }
 
-function editMovie(movieId) {
-
-    window.location.href = "editMovie.html?id=" + movieId;
-    console.log(movieId);
-
-}
 
 function populateDrpDwn()
 {
-
+   // window.location.href = "createScreenings.html" ;  
     $.getJSON("http://localhost:3000/movies", function (data) {
         console.log(data);
     for (var i = 0; i < data.length; i++) {
         $("#movieSelect").append("<option>" + data[i].title + "</option>");
+       // $("#screenSelect").append("<option>" + data[i].screenId + "</option>");
         
     }
 });
@@ -89,3 +98,6 @@ function deleteScreening(screenId) {
         );
     }
 }
+
+
+
