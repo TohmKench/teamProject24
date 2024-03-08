@@ -21,44 +21,45 @@ $("document").ready(function() {
             output += `<td>${data[i].title}</td>`;
             output += `<td>${startTimeString}</td>`;
             output += `<td>${startDate}</td>`;
-            output += `<td>${data[i].screenId}</td>`;
+            output += `<td>${data[i].theatreId}</td>`;
             output += `<td>${data[i].seatsRemaining}</td>`;
             output += `<td><button class="btn btn-primary" onclick='editScreening(${data[i].screenId})'>Edit Screening</button></td>`;
-            output += `<td><button class="btn btn-primary" onclick='deleteScreening(${data[i].screenId})'>Delete Screening</button></td>`;
+            output += `<td><button class="btn btn-primary" onclick='deleteMovie(${data[i].screenId})'>Delete Movie</button></td>`;
             output += `</tr>`;
         }
 
         $("#displayScreenings").append(output);
       });
       
-      $.getJSON("http://localhost:3000/screenings", function (data) {
+      $.getJSON("http://localhost:3000/theatre", function (data) {
         
         for (var i = 0; i < data.length; i++) {
-          //  $("#movieSelect").append("<option>" + data[i].title + "</option>");
-            $("#screenSelect").append("<option>" + data[i].screenId + "</option>");
-            
+           
+            $("#screenTheatre").append(`<option value= ${data[i].theatreId} >  ${data[i].theatreId}  </option>`);
         }
-
     });
+ 
       
- }
+ }       
 
  function addScreening() {
     let startTime = $("#startTime").val();
     let startDate = $("#startDate").val(); 
-   // let screenId = $("#screenId").val(); 
-    let seatsRemaining = $("#seatsRemaining").val(); 
-    let theatreId = $("#theatreId").val(); 
+    let screenId = $("#screenId").val();
+    let seatsRemaining = seatsRemainingCap; 
+    let theatreId = $("#screenTheatre").val(); 
     let endTime = "2024-02-10T21:55:00.000Z"; 
-    let movieId = $("#movieId").val();
+    let movieId = $("#movieSelect").val();
+    let dateTime = startDate + " " + startTime;    
 
-    let dateTime = startDate + " " + startTime;
-
-  
+    console.log(startDate);
+    console.log(startTime);
+    console.log(dateTime);
+    
     
     $.post(
         "http://localhost:3000/createScreening", 
-        { "movieId": movieId, "startTime": dateTime, "seatsRemaining": seatsRemaining, "theatreId": theatreId, "endTime":endTime }, // Use formattedDateTime
+        { "screenId": screenId, "movieId": movieId, "startTime": dateTime, "seatsRemaining": seatsRemaining, "theatreId": theatreId, "endTime":endTime }, // Use formattedDateTime
         function(data) { 
             window.location.href="http://localhost:3000/screenings.html";
             console.log("Screening added successfully"); 
@@ -66,38 +67,54 @@ $("document").ready(function() {
     );
 }
 
-
-function populateDrpDwn()
-{
-   // window.location.href = "createScreenings.html" ;  
-    $.getJSON("http://localhost:3000/movies", function (data) {
-        console.log(data);
-    for (var i = 0; i < data.length; i++) {
-        $("#movieSelect").append("<option>" + data[i].title + "</option>");
-       // $("#screenSelect").append("<option>" + data[i].screenId + "</option>");
+$(document).on("change", "#screenTheatre", function() {
+    var selectedTheatre = $(this).val();
+    console.log("Selected theatre: " + selectedTheatre);
+    // Perform further actions as needed
+    $.getJSON("http://localhost:3000/screenings", function (data) {
         
-    }
+
+
+            seatsRemainingCap = data[selectedTheatre].capacity;
+
+            console.log(seatsRemainingCap);
+
+        
+        
+    });
 });
-}
+
+
+
+
 
 function editScreening(screenId) {
 
-    window.location.href = "editScreening.html?id=" + screenId;
+    window.location.href = "editScreenings.html?id=" + screenId;
     console.log(screenId);
+
 }
 
-function deleteScreening(screenId) {
-    if (confirm("Are you sure you want to delete this screen?")) {
+function populateDrpDwn() {
+    $.getJSON("http://localhost:3000/movies", function (data) {
+        console.log(data);
+        for (var i = 0; i < data.length; i++) {
+            $("#movieSelect").append(`<option value="${data[i].movieId}">${data[i].title}</option>`);
+        }
+    });
+}
+
+
+function deleteMovie(screenId) {
+    if (confirm("Are you sure you want to delete this movie?")) {
         $.post(
             "http://localhost:3000/deleteScreening",
             {"screenId":screenId},
             function(response) {
-                alert("Screen deleted successfully");
+                alert("Screenings deleted successfully");
                 window.location.href="http://localhost:3000/screenings.html";
             }
         );
     }
 }
-
-
 
