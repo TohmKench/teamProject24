@@ -24,7 +24,7 @@ $("document").ready(function() {
             output += `<td>${data[i].theatreId}</td>`;
             output += `<td>${data[i].seatsRemaining}</td>`;
             output += `<td><button class="btn btn-primary" onclick='editScreening(${data[i].screenId})'>Edit Screening</button></td>`;
-            output += `<td><button class="btn btn-primary" onclick='deleteMovie(${data[i].screenId})'>Delete Movie</button></td>`;
+            output += `<td><button class="btn btn-primary" onclick='deleteScreening(${data[i].screenId})'>Delete Screening</button></td>`;
             output += `</tr>`;
         }
 
@@ -84,16 +84,15 @@ function populateDrpDwn() {
 }
 
 
-function deleteMovie(screenId) {
-    if (confirm("Are you sure you want to delete this movie?")) {
+function deleteScreening(screenId) {
+    if (confirm("Are you sure you want to delete this screen?")) {
         $.post(
             "http://localhost:3000/deleteScreening",
             {"screenId":screenId},
             function(response) {
-                alert("Screenings deleted successfully");
+                alert("Screen deleted successfully");
                 window.location.href="http://localhost:3000/screenings.html";
             }
         );
     }
 }
-
