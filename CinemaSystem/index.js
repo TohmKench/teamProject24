@@ -62,6 +62,12 @@ app.post("/updateScreening", function (req, res) {
      
 });
 
+// delete a screening
+app.post("/deleteScreening", function (req, res)
+{
+  db.deleteScreening(req, res);
+});
+
 
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");

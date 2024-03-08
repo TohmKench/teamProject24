@@ -44,7 +44,21 @@ app.get("/screenings", function (req, res) {
   db.getScreenings(req, res);
 });
 
-// Update a movie
+
+// Create a screening
+app.post("/createScreening", function (req, res) {
+  db.createScreening(req,res);
+  //res.send(201);
+     
+});
+
+// Get a specific screen by ID
+app.get("/screenings/:id", function (req, res) {
+  var id = req.params.id;
+	db.getSpecificScreening(req, res, id);
+});
+
+// Update a screening
 app.post("/updateScreening", function (req, res) {
   db.updateScreening(req,res);
   //res.send(201);

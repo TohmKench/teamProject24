@@ -61,7 +61,7 @@ $("document").ready(function() {
         "http://localhost:3000/createScreening", 
         { "screenId": screenId, "movieId": movieId, "startTime": dateTime, "seatsRemaining": seatsRemaining, "theatreId": theatreId, "endTime":endTime }, // Use formattedDateTime
         function(data) { 
-            //window.location.href="http://localhost:3000/screenings.html";
+            window.location.href="http://localhost:3000/screenings.html";
             console.log("Screening added successfully"); 
         }
     );
