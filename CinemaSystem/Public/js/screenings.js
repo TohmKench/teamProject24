@@ -35,7 +35,7 @@ $("document").ready(function() {
         
         for (var i = 0; i < data.length; i++) {
            
-            $("#screenTheatre").append(`<option value= ${data[i].theatreId} >  ${data[i].theatreId}  </option>`);
+            $("#screenTheatre").append(`<option value= ${data[i].capacity} >  ${data[i].theatreId}  </option>`);
         }
     });
  
@@ -46,15 +46,14 @@ $("document").ready(function() {
     let startTime = $("#startTime").val();
     let startDate = $("#startDate").val(); 
     let screenId = $("#screenId").val();
-    let seatsRemaining = seatsRemainingCap; 
-    let theatreId = $("#screenTheatre").val(); 
+    let seatsRemaining = $("#screenTheatre").val(); 
+    let theatreId = $("#screenTheatre option:selected").text(); 
     let endTime = "2024-02-10T21:55:00.000Z"; 
     let movieId = $("#movieSelect").val();
     let dateTime = startDate + " " + startTime;    
-
-    console.log(startDate);
-    console.log(startTime);
-    console.log(dateTime);
+    
+    console.log(seatsRemaining);
+    console.log(theatreId);
     
     
     $.post(
@@ -66,26 +65,6 @@ $("document").ready(function() {
         }
     );
 }
-
-$(document).on("change", "#screenTheatre", function() {
-    var selectedTheatre = $(this).val();
-    console.log("Selected theatre: " + selectedTheatre);
-    // Perform further actions as needed
-    $.getJSON("http://localhost:3000/screenings", function (data) {
-        
-
-
-            seatsRemainingCap = data[selectedTheatre].capacity;
-
-            console.log(seatsRemainingCap);
-
-        
-        
-    });
-});
-
-
-
 
 
 function editScreening(screenId) {
