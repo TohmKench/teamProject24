@@ -1,7 +1,8 @@
 $("document").ready(function() {
 
     displayMovies();
-    
+    populateDrpDwn();
+
  });
  
  
@@ -88,5 +89,22 @@ $("document").ready(function() {
         var formattedDateTime = curr_year + "-" + curr_month + "-" + curr_date + " " + hours + ":" + minutes + ":" + seconds;
         
         return formattedDateTime;
+    }
+
+    function populateDrpDwn()
+    {
+        $.getJSON("http://localhost:3000/movies", function (data) {
+            console.log(data);
+        for (var i = 0; i < data.length; i++) {
+            $("#movieSelect").append("<option>" + data[i].title + "</option>");
+            
+        }
+    });
+    }
+    
+    function redirectToScreenings(movieName) {
+    
+        window.location.href = "viewMovieScreenings.html?movieName=" + movieName;
+        console.log(movieName);
     }
     

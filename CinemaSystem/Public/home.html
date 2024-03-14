@@ -11,6 +11,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--Needed scripts for styling and CSS, do not remove, and bring to other pages if made-->
     <script src="js/uiMovies.js"></script>
+    <script src="js/viewMovieScreenings.js"></script>
+
 </head>
 <body>
     <header class="bg-dark text-white py-4">
@@ -31,6 +33,13 @@
             <th></th>
         </tr>
     </thead>
+
+    <select id="movieSelect" class="form-select" style="width: 50%; color: #333;">
+        <option value="" disabled selected>Choose Movie</option>
+    </select>
+
+    <button class="btn btn-primary" onclick='redirectToScreenings($("#movieSelect").val())'>Book now</button>
+
     
     <tbody id ="displayMoviesScreens">
     

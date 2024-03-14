@@ -186,3 +186,20 @@ exports.getSpecificScreening = function(req,res,id ){
     });
     
   }
+
+  // Get specific movie's screenings for second page front end
+
+     // getSpecificScreening
+     exports.getSpecificMovieScreenings = function(req, res, movieName) {
+     // console.log(movieName);
+      connection.query(`
+        SELECT screen.*, movie.title AS movieTitle
+        FROM screen 
+        INNER JOIN movie ON screen.movieId = movie.movieId 
+        WHERE movie.title = ?
+      `, [movieName], function(err, rows, fields) {
+        if (err) throw err;
+    
+        res.send(JSON.stringify(rows));
+      });
+    }
