@@ -68,7 +68,12 @@ app.post("/deleteScreening", function (req, res)
   db.deleteScreening(req, res);
 });
 
+// UI
 
+app.get("/moviesScreens", function(req,res)
+{
+   db.getMoviesScreens(req,res);
+});
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
 });
