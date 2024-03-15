@@ -74,6 +74,13 @@ app.get("/moviesScreens", function(req,res)
 {
    db.getMoviesScreens(req,res);
 });
+
+// Get screenings for a specific movie
+app.get("/movieScreenings/:movieName", function (req, res) {
+  var movieName = req.params.movieName; // retrieve movieName from URL parameter
+  console.log(movieName);
+  db.getSpecificMovieScreenings(req, res, movieName);
+});
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
 });
