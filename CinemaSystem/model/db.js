@@ -193,7 +193,7 @@ exports.getSpecificScreening = function(req,res,id ){
      exports.getSpecificMovieScreenings = function(req, res, movieName) {
      // console.log(movieName);
       connection.query(`
-        SELECT screen.*, movie.title AS movieTitle
+			SELECT screen.*, movie.title AS movieTitle, movie.runtime AS runTime
         FROM screen 
         INNER JOIN movie ON screen.movieId = movie.movieId 
         WHERE movie.title = ?
