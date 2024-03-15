@@ -62,8 +62,8 @@ exports.updateMovie = function(req, res) {
   };
   
    // getSpecificMovie
-exports.getSpecificMovie = function(req,res,id ){
-	connection.query(`SELECT movieId, title, language, releaseDate, genre, runtime FROM movie WHERE movieId = ?`,[id] ,function(err, rows, fields) {
+exports.getMovieById = function(req,res,id ){
+	connection.query(`SELECT * FROM movie WHERE movieId = ?`,[id] ,function(err, rows, fields) {
 	  if (err) throw err;
 
 	  res.send(JSON.stringify(rows));

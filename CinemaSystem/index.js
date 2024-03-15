@@ -19,7 +19,7 @@ app.get("/movies", function (req, res) {
 // Get a specific movie by ID
 app.get("/movies/:id", function (req, res) {
   var id = req.params.id;
-	db.getSpecificMovie(req, res, id);
+	db.getMovieById(req, res, id);
 });
 
 app.post("/movies", function(req,res)
