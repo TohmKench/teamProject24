@@ -177,6 +177,75 @@ exports.deleteScreening = function(req, res) {
   });
 };
 
+// getTicketType
+exports.getTicketType = function(req,res){
+
+	connection.query("SELECT * FROM `ticketType` ", function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+}
+
+// CREATE a ticketType
+exports.createTicketType = function(req, res) {
+	var typeId = req.body.typeId;
+	var typeName = req.body.typeName;
+	var cost = req.body.cost;
+  
+	var query = "INSERT INTO ticketType (typeId, typeName, cost) VALUES (?, ?, ?)";
+	connection.query(query, [typeId, typeName, cost], function(err, result) {
+	  if (err) throw err;
+	  res.send("Ticket Type created successfully");
+	});
+  };
+
+  // UPDATE a ticketType
+exports.updateTicketType = function(req, res) {
+	var typeId = req.body.typeId;
+	var typeName = req.body.typeName;
+	var cost = req.body.cost;
+
+	var query = "UPDATE ticketType SET typeName=?, cost=? WHERE typeId=?";
+	connection.query(query, [typeName, cost, typeId], function(err, result) {
+		if (err) {
+            console.error("Error updating Ticket Type:", err);
+            res.status(500).send("Error updating Ticket Type");
+        } else {
+            console.log("Ticket Type updated successfully");
+            res.send("Ticket Type updated successfully");
+        }
+	});
+  };
+  
+   // getSpecificTicketType
+exports.getTicketTypeById = function(req,res,id ){
+	connection.query(`SELECT * FROM ticketType WHERE typeId = ?`,[id] ,function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+ }
+// deleteTicketType
+exports.deleteTicketType = function(req, res) {
+    var typeId = req.body.typeId;
+
+    var query = "DELETE FROM ticketType WHERE typeId = ?";
+    connection.query(query, [typeId], function(err, result) {
+        if (err) {
+            console.error("Error deleting Ticket Type:", err);
+            res.status(500).send("Error deleting Ticket Type");
+        } else {
+            console.log("Ticket Type deleted successfully");
+            res.send("Ticket Type deleted successfully");
+        }
+    });
+};
+
 // Get movie and screen for User 
 exports.getMoviesScreens = function(req,res){
 

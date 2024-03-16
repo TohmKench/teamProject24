@@ -68,6 +68,35 @@ app.post("/deleteScreening", function (req, res)
   db.deleteScreening(req, res);
 });
 
+// ticketType
+app.get("/ticketType", function (req, res) {
+  db.getTicketType(req, res);
+});
+
+// Get a specific ticketType by ID
+app.get("/ticketType/:id", function (req, res) {
+  var id = req.params.id;
+	db.getTicketTypeById(req, res, id);
+});
+
+app.post("/ticketType", function(req,res)
+{
+ db.createTicketType(req,res);
+});
+
+// Update a ticketType
+app.post("/updateTicketType", function (req, res) {
+  db.updateTicketType(req,res);
+  //res.send(201);
+     
+});
+
+// delete a ticketType
+app.post("/deleteTicketType", function (req, res)
+{
+  db.deleteTicketType(req, res);
+});
+
 // UI
 
 app.get("/moviesScreens", function(req,res)
