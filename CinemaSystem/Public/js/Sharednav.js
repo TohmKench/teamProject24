@@ -1,6 +1,11 @@
 $("document").ready(function () {
 
 $("#myDiv").append(`
+<header class="bg-dark text-white py-4">
+        <div class="container">
+            <h1 class="text-center">Movies</h1>
+        </div>
+    </header>
 <nav class="bg-secondary py-2">
 <div class="container">
     <ul class="nav justify-content-center">

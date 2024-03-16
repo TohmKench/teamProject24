@@ -75,6 +75,32 @@ app.get("/moviesScreens", function(req,res)
    db.getMoviesScreens(req,res);
 });
 
+app.post("/editTheatre/:theatreId", function (req, res) {
+  db.editTheatre(req, res);
+});
+
+app.delete("/deleteTheatre/:theatreId", function (req, res) {
+  db.deleteTheatre(req, res);
+});
+
+
+app.get("/theatre", function (req, res) {
+  db.getTheatre(req, res);
+});
+
+app.post("/createTheatre", function (req, res) {
+  db.createTheatre(req, res);
+});
+
+app.get("/booking", function (req, res) {
+  db.getBooking(req, res);
+});
+
+
+app.post("/createBooking", function (req, res) {
+  db.createBooking(req, res);
+});
+
 // Get screenings for a specific movie
 app.get("/movieScreenings/:movieName", function (req, res) {
   var movieName = req.params.movieName; // retrieve movieName from URL parameter

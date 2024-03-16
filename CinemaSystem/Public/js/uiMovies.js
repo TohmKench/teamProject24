@@ -7,21 +7,27 @@ $("document").ready(function() {
  
  
  function displayMovies() {
-    $.getJSON("http://localhost:3000/moviesScreens", function (data) {
+    $.get("http://localhost:3000/moviesScreens", function (data) {
         console.log(data);
         console.log(data.length);
-        var output;
+        /*var output;
         for(var i=0;i < data.length;i++)
         {
             
             output += `<tr>`;
+            output += `<img src="'+${data[i].imageLink}+'"></td>`;
             output += `<td><a href="viewDetails.html?movieId=${data[i].movieId}">${data[i].title}</a></td>`;
-            output += `<td>${data[i].language}</td>`;
-            output += `<td><button class="btn btn-primary bookNow" data-screen-id(${data[i].screenId})'>Book now</button></td>`; // send screenId for booking and movieId too?
             output += `</tr>`; 
         }
 
-        $("#displayMoviesScreens").append(output);
+        $("#displayMoviesScreens").append(output);/*/
+        var movie=JSON.parse(data);
+        movie.forEach(function(item) {
+            //console.log(item);
+            $("#displayMoviesScreens").append(`<a href="viewDetails.html?movieId=${item.movieId}">
+                <img src="${item.imageLink}" alt="movie poster" style="float: left; margin-right: 20px;" width="200" height="300">
+            </a>`);
+        });
       });
  
  }

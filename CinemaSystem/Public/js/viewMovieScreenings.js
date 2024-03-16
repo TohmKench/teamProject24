@@ -5,31 +5,37 @@ $(document).ready(function() {
 
     $.getJSON("http://localhost:3000/movieScreenings/" + movieName, function(data) {
     
-  console.log(data.length);
-  $("#movieTitle").html(`Screenings for movie: '${data[0].movieTitle}'`);
+        console.log(data.length);
+        $("#movieTitle").html(`Screenings for movie: '${data[0].movieTitle}'`);
 
-  var output ="";
-  for(var i=0;i < data.length;i++)
-  {
-   // console.log("hi");
-     console.log(data[0].movieTitle);
-     output += `<td>${returnFormattedDate(data[i].startTime)}</td>`;
-     output += `<td>${returnFormattedDateTime(data[i].startTime)}</td>`;
-     output += `<td>${returnFormattedDateTime(data[i].endTime)}</td>`;
-     output += `<td>${data[i].runTime} mins</td>`;
-     output += `<td><button class="btn btn-primary" onclick='redirectToBooking(${data[i].screenId})'>Book this screen</button></td>`;
-      output += `</tr>`;
-  }
+        var output ="";
+        for(var i=0;i < data.length;i++)
+        {
+        // console.log("hi");
+            console.log(data[0].movieTitle);
+            output += `<td>${returnFormattedDate(data[i].startTime)}</td>`;
+            output += `<td>${returnFormattedDateTime(data[i].startTime)}</td>`;
+            output += `<td>${returnFormattedDateTime(data[i].endTime)}</td>`;
+            output += `<td>${data[i].runTime} mins</td>`;
+            output += `<td><button class="btn btn-primary bookNow"  data-screen-id="(${data[i].screenId}")'>Book this screen</button></td>`;
+            output += `</tr>`;
+        }
 
-  $("#displayMovieScreenings").append(output);
+        $("#displayMovieScreenings").append(output);
 
 
-  });
+    });
+
+    $(document).on('click', '.bookNow', function() {
+        var screenId = $(this).data('screen-id');
+        console.log("Book this screen button clicked for screenId: " + screenId);
+        window.location.href = "bookNow.html?screenId=" + parseInt(screenId);
+    });
 
 });
 
 function returnFormattedDate(dt) {
-  var resultDate = new Date(dt);
+var resultDate = new Date(dt);
 
   var curr_date = resultDate.getDate();
   if (curr_date < 10) 

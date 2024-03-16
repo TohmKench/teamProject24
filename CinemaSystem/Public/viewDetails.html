@@ -5,8 +5,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="js/viewDetails.js"></script>
-
+    <script type="text/javascript" src="js/viewMovieScreenings.js"></script>
 </head>
+<div id="myDiv"><script src="js/Sharednav.js"></script></div>
 <body>
     <div class="container">
         <h1 id="head" class="mt-5 mb-3"></h1>
@@ -14,24 +15,33 @@
         <div class="row">
             <div class="col-md-6">
                 <!-- Movie Information -->
-                <div class="card">
+                <div class="card" style="width: 600px;">
                     <div class="card-header">
                         Movie Details
                     </div>
                     <div class="card-body">
-                        <table class="table">
+                        <ul id="details" class="list-group">
+                            
+                        </ul>
+                    </div>
+                    <div id="trailer" class="card-footer"></div>
+                </div>
+                <h5 id="movieTitle" style="text-align: center;"></h5>
+                    <hr>
+                        <table class="table" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Language</th>
-                                    <th>Release Date</th>
-                                    <th>Genre</th>
+                                    <!-- <th>Movie</th> -->
+                                    <th>Screening Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
                                     <th>Runtime</th>
+                                    <th></th>
                                 </tr>
                             </thead>
-                            <tbody id="details"></tbody>
-                        </table>
-                    </div>
-                </div>
+                        <tbody id="displayMovieScreenings"></tbody>
+                </table>
+                <hr>
             </div>
         </div>
     </div>

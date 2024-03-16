@@ -15,28 +15,23 @@
 
 </head>
 <body>
-    <header class="bg-dark text-white py-4">
-        <div class="container">
-            <h1 class="text-center">Movies</h1>
-        </div>
-    </header>
     <div id="myDiv">
         <script src="js/Sharednav.js"></script></div>
     <hr>
     <table class="table" style="width:100%">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Language</th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
 
-    <select id="movieSelect" class="form-select" style="width: 50%; color: #333;">
+    <select id="movieSelect" class="form-select" style="width: 50%; color: #333; margin:10px;">
         <option value="" disabled selected>Choose Movie</option>
     </select>
 
-    <button class="btn btn-primary" onclick='redirectToScreenings($("#movieSelect").val())'>Book now</button>
+    <button class="btn btn-primary" style="margin: 10px;" onclick='redirectToScreenings($("#movieSelect").val())'>Book now</button>
 
     
     <tbody id ="displayMoviesScreens">

@@ -231,6 +231,16 @@ ALTER TABLE `screen`
 ALTER TABLE `ticket`
   ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`bookingId`) REFERENCES `booking` (`bookingId`),
   ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`screenId`) REFERENCES `screen` (`screenId`);
+
+-- Add columns for price and quantity in the ticket table
+ALTER TABLE `ticket`
+  ADD COLUMN `price` double DEFAULT NULL,
+  ADD COLUMN `quantity` int DEFAULT NULL;
+
+-- Add column for trailer links in the movie table
+ALTER TABLE `movie`
+  ADD COLUMN `trailerLink` varchar(255) DEFAULT NULL;
+  ADD COLUMN `imageLink` varchar(255) DEFAULT NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
