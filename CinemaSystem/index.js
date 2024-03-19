@@ -68,6 +68,39 @@ app.post("/deleteScreening", function (req, res)
   db.deleteScreening(req, res);
 });
 
+
+// get Tickets
+app.get("/tickets", function (req, res) {
+  db.getTickets(req, res);
+});
+
+// add Ticket
+app.post("/tickets", function(req,res)
+{
+ db.createTicket(req,res);
+});
+
+// Get a specific ticket by ID
+app.get("/tickets/:id", function (req, res) {
+  var id = req.params.id;
+	db.getSpecificTicket(req, res, id);
+});
+
+
+// Update a ticket
+app.post("/updateTicket", function (req, res) {
+  db.updateTicket(req,res);
+  //res.send(201);
+     
+});
+
+// delete a ticket
+app.post("/deleteTicket", function (req, res)
+{
+  db.deleteTicket(req, res);
+});
+
+
 // ticketType
 app.get("/ticketType", function (req, res) {
   db.getTicketType(req, res);
