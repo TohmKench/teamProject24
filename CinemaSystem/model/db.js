@@ -418,3 +418,49 @@ exports.deleteTicketType = function(req, res) {
         res.send(JSON.stringify(rows));
       });
     }
+
+// LOGIN a user
+exports.loginUser = function(req, res) {
+  var email = req.body.email;
+  var password = req.body.password;
+
+  connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
+    if (err) throw err;
+
+    if (rows.length == 0) {
+      res.status(400).send('User not found');
+    } else {
+      var user = rows[0];
+
+      if (password == user.password) {
+        res.status(200).send('Login successful');
+      } else {
+        res.status(400).send('Incorrect password');
+      }
+    }
+  });
+}
+
+// REGISTER a user
+exports.registerUser = function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    var userType = req.body.userType;
+
+    connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length > 0) {
+            res.status(400).send('Email already in use');
+        } else {
+            connection.query("INSERT INTO `users` (`email`, `password`, `userType`) VALUES ( ?, ?, ?)", [email, password, userType], function(err, results) {
+                if (err) {
+                    console.error("Error creating user:", err);
+                    res.status(500).json({ error: "Error creating user" });
+                } else {
+                    res.status(200).json({ message: "User created successfully", userId: results.insertId });
+                }
+            });
+        }
+    });
+};
