@@ -6,13 +6,14 @@ $(document).ready(function() {
     $.getJSON("http://localhost:3000/movieScreenings/" + movieName, function(data) {
     
   console.log(data.length);
-  $("#movieTitle").html(`Screenings for movie: '${data[0].movieTitle}'`);
 
   var output ="";
   for(var i=0;i < data.length;i++)
   {
    // console.log("hi");
      console.log(data[0].movieTitle);
+     $("#movieTitle").html(`Screenings for movie: '${data[0].movieTitle}'`);
+
      output += `<td>${returnFormattedDate(data[i].startTime)}</td>`;
      output += `<td>${returnFormattedDateTime(data[i].startTime)}</td>`;
      output += `<td>${returnFormattedDateTime(data[i].endTime)}</td>`;
