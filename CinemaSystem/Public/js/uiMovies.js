@@ -2,7 +2,7 @@ $("document").ready(function() {
 
     displayMovies();
     populateDrpDwn();
-
+    $('.carousel').carousel();
  });
  
  
