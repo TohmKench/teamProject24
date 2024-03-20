@@ -464,3 +464,15 @@ exports.registerUser = function(req, res) {
         }
     });
 };
+
+// getTheatre
+exports.getTheatre = function(req, res) {
+  connection.query("SELECT * FROM theatre", function(err, rows, fields) {
+    if (err) {
+      console.error("Error getting theatres:", err);
+      res.status(500).send("Error getting theatres");
+    } else {
+      res.send(JSON.stringify(rows));
+    }
+  });
+};
