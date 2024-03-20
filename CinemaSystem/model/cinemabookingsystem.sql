@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2024 at 06:01 PM
--- Server version: 8.0.32
--- PHP Version: 7.4.29
+-- Generation Time: Mar 20, 2024 at 12:35 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `booking` (
-  `bookingId` int NOT NULL,
+  `bookingId` int(11) NOT NULL,
   `bookingDate` date DEFAULT NULL,
   `totalCost` double DEFAULT NULL,
-  `seats` int DEFAULT NULL,
+  `seats` int(11) DEFAULT NULL,
   `emailAddress` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `booking`
@@ -51,13 +51,13 @@ INSERT INTO `booking` (`bookingId`, `bookingDate`, `totalCost`, `seats`, `emailA
 --
 
 CREATE TABLE `movie` (
-  `movieId` int NOT NULL,
+  `movieId` int(11) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
   `language` varchar(50) DEFAULT NULL,
   `releaseDate` date DEFAULT NULL,
   `genre` varchar(50) DEFAULT NULL,
-  `runtime` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `runtime` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `movie`
@@ -76,22 +76,20 @@ INSERT INTO `movie` (`movieId`, `title`, `language`, `releaseDate`, `genre`, `ru
 --
 
 CREATE TABLE `screen` (
-  `screenId` int NOT NULL,
-  `movieId` int NOT NULL,
+  `screenId` int(11) NOT NULL,
+  `movieId` int(11) NOT NULL,
   `startTime` datetime DEFAULT NULL,
   `endTime` datetime DEFAULT NULL,
-  `seatsRemaining` int DEFAULT NULL,
-  `theatreId` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `seatsRemaining` int(11) DEFAULT NULL,
+  `theatreId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `screen`
 --
 
 INSERT INTO `screen` (`screenId`, `movieId`, `startTime`, `endTime`, `seatsRemaining`, `theatreId`) VALUES
-(1, 1, '2024-02-09 18:00:00', '2024-02-09 20:30:00', 90, 1),
-(2, 2, '2024-02-10 19:00:00', '2024-02-10 21:55:00', 120, 2),
-(3, 3, '2024-02-11 17:30:00', '2024-02-11 20:00:00', 180, 3);
+(1, 2, '2024-03-09 18:30:01', '2024-02-10 21:55:00', 150, 3);
 
 -- --------------------------------------------------------
 
@@ -100,9 +98,9 @@ INSERT INTO `screen` (`screenId`, `movieId`, `startTime`, `endTime`, `seatsRemai
 --
 
 CREATE TABLE `theatre` (
-  `theatreId` int NOT NULL,
-  `capacity` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `theatreId` int(11) NOT NULL,
+  `capacity` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `theatre`
@@ -120,11 +118,11 @@ INSERT INTO `theatre` (`theatreId`, `capacity`) VALUES
 --
 
 CREATE TABLE `ticket` (
-  `ticketNo` int NOT NULL,
-  `bookingId` int DEFAULT NULL,
-  `screenId` int DEFAULT NULL,
+  `ticketNo` int(11) NOT NULL,
+  `bookingId` int(11) DEFAULT NULL,
+  `screenId` int(11) DEFAULT NULL,
   `ticketType` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ticket`
@@ -142,9 +140,9 @@ INSERT INTO `ticket` (`ticketNo`, `bookingId`, `screenId`, `ticketType`) VALUES
 --
 
 CREATE TABLE `tickettype` (
-  `typeId` int NOT NULL,
+  `typeId` int(11) NOT NULL,
   `typeName` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tickettype`
@@ -154,6 +152,28 @@ INSERT INTO `tickettype` (`typeId`, `typeName`) VALUES
 (1, 'Adult'),
 (2, 'Student'),
 (3, 'Senior');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `userID` int(11) NOT NULL,
+  `userType` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`userID`, `userType`, `email`, `password`) VALUES
+(1, 'admin', 'admin@example.com', 'admin123'),
+(2, 'customer', 'customer1@example.com', 'customer123'),
+(3, 'customer', 'customer2@example.com', 'customer456');
 
 --
 -- Indexes for dumped tables
@@ -200,6 +220,12 @@ ALTER TABLE `tickettype`
   ADD PRIMARY KEY (`typeId`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`userID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -207,13 +233,19 @@ ALTER TABLE `tickettype`
 -- AUTO_INCREMENT for table `movie`
 --
 ALTER TABLE `movie`
-  MODIFY `movieId` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `movieId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `screen`
 --
 ALTER TABLE `screen`
-  MODIFY `movieId` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `screenId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
