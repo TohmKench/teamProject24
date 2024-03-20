@@ -68,8 +68,6 @@ app.post("/deleteScreening", function (req, res)
   db.deleteScreening(req, res);
 });
 
-<<<<<<< Updated upstream
-=======
 
 // get Tickets
 app.get("/tickets", function (req, res) {
@@ -103,7 +101,6 @@ app.post("/deleteTicket", function (req, res)
 });
 
 
->>>>>>> Stashed changes
 // ticketType
 app.get("/ticketType", function (req, res) {
   db.getTicketType(req, res);
