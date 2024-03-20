@@ -7,6 +7,8 @@ $("#myDiv").append(`
         <li class="nav-item"><a class="nav-link text-white" href="home.html">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="movies.html">Movies</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="screenings.html">Screenings</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="ticket.html">Ticket</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="ticketType.html">Ticket Type</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="screeningsByDate.html">Today's Screenings</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="logIn.html">Log in</a></li>
     </ul>
