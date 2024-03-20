@@ -177,6 +177,75 @@ exports.deleteScreening = function(req, res) {
   });
 };
 
+// getTicketType
+exports.getTicketType = function(req,res){
+
+	connection.query("SELECT * FROM `ticketType` ", function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+}
+
+// CREATE a ticketType
+exports.createTicketType = function(req, res) {
+	var typeId = req.body.typeId;
+	var typeName = req.body.typeName;
+	var cost = req.body.cost;
+  
+	var query = "INSERT INTO ticketType (typeId, typeName, cost) VALUES (?, ?, ?)";
+	connection.query(query, [typeId, typeName, cost], function(err, result) {
+	  if (err) throw err;
+	  res.send("Ticket Type created successfully");
+	});
+  };
+
+  // UPDATE a ticketType
+exports.updateTicketType = function(req, res) {
+	var typeId = req.body.typeId;
+	var typeName = req.body.typeName;
+	var cost = req.body.cost;
+
+	var query = "UPDATE ticketType SET typeName=?, cost=? WHERE typeId=?";
+	connection.query(query, [typeName, cost, typeId], function(err, result) {
+		if (err) {
+            console.error("Error updating Ticket Type:", err);
+            res.status(500).send("Error updating Ticket Type");
+        } else {
+            console.log("Ticket Type updated successfully");
+            res.send("Ticket Type updated successfully");
+        }
+	});
+  };
+  
+   // getSpecificTicketType
+exports.getTicketTypeById = function(req,res,id ){
+	connection.query(`SELECT * FROM ticketType WHERE typeId = ?`,[id] ,function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+ }
+// deleteTicketType
+exports.deleteTicketType = function(req, res) {
+    var typeId = req.body.typeId;
+
+    var query = "DELETE FROM ticketType WHERE typeId = ?";
+    connection.query(query, [typeId], function(err, result) {
+        if (err) {
+            console.error("Error deleting Ticket Type:", err);
+            res.status(500).send("Error deleting Ticket Type");
+        } else {
+            console.log("Ticket Type deleted successfully");
+            res.send("Ticket Type deleted successfully");
+        }
+    });
+};
+
 // Get movie and screen for User 
 exports.getMoviesScreens = function(req,res){
 
@@ -300,4 +369,51 @@ exports.createBooking = function(req, res) {
       res.status(200).json({ message: "Booking created successfully", bookingId: results.insertId });
     }
   });
+};
+
+
+// LOGIN a user
+exports.loginUser = function(req, res) {
+  var email = req.body.email;
+  var password = req.body.password;
+
+  connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
+    if (err) throw err;
+
+    if (rows.length == 0) {
+      res.status(400).send('User not found');
+    } else {
+      var user = rows[0];
+
+      if (password == user.password) {
+        res.status(200).send('Login successful');
+      } else {
+        res.status(400).send('Incorrect password');
+      }
+    }
+  });
+}
+
+// REGISTER a user
+exports.registerUser = function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    var userType = req.body.userType;
+
+    connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length > 0) {
+            res.status(400).send('Email already in use');
+        } else {
+            connection.query("INSERT INTO `users` (`email`, `password`, `userType`) VALUES ( ?, ?, ?)", [email, password, userType], function(err, results) {
+                if (err) {
+                    console.error("Error creating user:", err);
+                    res.status(500).json({ error: "Error creating user" });
+                } else {
+                    res.status(200).json({ message: "User created successfully", userId: results.insertId });
+                }
+            });
+        }
+    });
 };
