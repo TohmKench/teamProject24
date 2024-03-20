@@ -34,13 +34,25 @@ function populateDropdowns() {
 }
 
 function updateScreening() {
-    let screenId = $("#screenId").val();
+
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+    let screenId = urlParams.get('id');
     let movieId = $("#movieSelect").val();
     let startTime = $("#startTime").val();
     let startDate = $("#startDate").val();
-    let theatreId = $("#screenTheatre").val();
+    let theatreId = $("#screenTheatre option:selected").text(); 
 
     let dateTime = startDate + ' ' + startTime;
+
+
+    console.log(screenId);
+    console.log(movieId);
+    console.log(startTime);
+    console.log(startDate);
+    console.log(theatreId);
+    console.log(dateTime);
 
     $.post(
         "http://localhost:3000/updateScreening",
@@ -52,7 +64,7 @@ function updateScreening() {
         },
         function(response) { 
             console.log("Screening updated successfully"); 
-            window.location.href="http://localhost:3000/screenings.html";
+            //window.location.href="http://localhost:3000/screenings.html";
         }
     );
 }
