@@ -92,3 +92,4 @@ function returnFormattedDateTime(dt) {
 
   return formattedDateTime;
 }
+});
