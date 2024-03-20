@@ -68,3 +68,26 @@ function deleteMovie(movieId) {
     }
 }
 
+function returnFormattedDate(dt) {
+    var resultDate = new Date(dt);
+
+    var curr_date = resultDate.getDate();
+    if (curr_date < 10) 
+    {
+        curr_date = '0' + curr_date;
+    }
+    
+    var curr_month = resultDate.getMonth() + 1;
+    if (curr_month < 10) 
+    {
+        curr_month = '0' + curr_month;
+    }
+    
+    var curr_year = resultDate.getFullYear();
+    
+    var formattedDate = curr_year+"-"+curr_month+"-"+curr_date;
+    
+    return formattedDate;
+}
+
+
