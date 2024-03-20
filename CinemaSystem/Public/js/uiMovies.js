@@ -1,6 +1,7 @@
 $("document").ready(function() {
     displayMovies();
     populateDrpDwn();
+    $('.carousel').carousel();
 
  });
  
@@ -21,6 +22,7 @@ $("document").ready(function() {
 
         $("#displayMoviesScreens").append(output);/*/
         var movie=JSON.parse(data);
+        console.log(movie);
         movie.forEach(function(item) {
             //console.log(item);
             $("#displayMoviesScreens").append(`<a href="viewDetails.html?movieId=${item.movieId}">
