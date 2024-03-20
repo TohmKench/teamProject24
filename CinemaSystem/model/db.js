@@ -175,6 +175,152 @@ exports.getSpecificScreening = function(req,res,id ){
     });
 };
 
+
+// Ticket
+// getTickets
+exports.getTickets = function(req,res){
+
+	connection.query("SELECT * FROM ticket", function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+}
+
+// add Ticket
+
+exports.createTicket = function(req, res) {
+	var ticketNo = req.body.ticketNo;
+	var bookingId = req.body.bookingId;
+	var screenId = req.body.screenId;
+	var ticketType = req.body.ticketType;
+
+  
+	var query = "INSERT INTO ticket (ticketNo, bookingId, screenId, ticketType) VALUES (?, ?, ?, ?)";
+	connection.query(query, [ticketNo, bookingId, screenId, ticketType], function(err, result) {
+	  if (err) throw err;
+	  res.send("Ticket created successfully");
+	});
+  };
+
+  
+  // UPDATE a ticket
+exports.updateTicket = function(req, res) {
+	var ticketId = req.body.ticketId;
+	//console.log(ticketId);
+	var bookingId = req.body.bookingId;
+	var screenId = req.body.screenId;
+	var ticketType = req.body.ticketType;
+console.log(ticketType);
+	var query = "UPDATE ticket SET bookingId=?, screenId=?, ticketType=? WHERE ticketNo=?";
+	connection.query(query, [bookingId, screenId, ticketType, ticketId], function(err, result) {
+		if (err) {
+            console.error("Error updating ticket:", err);
+            res.status(500).send("Error updating ticket");
+        } else {
+            console.log("Ticket updated successfully");
+            res.send("Ticket updated successfully");
+        }
+	});
+  };
+  
+   // getSpecificTicket
+exports.getSpecificTicket = function(req,res,id ){
+	connection.query(`SELECT * FROM ticket WHERE ticketNo = ?`,[id] ,function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+ }
+// deleteTicket
+exports.deleteTicket = function(req, res) {
+    var ticketId = req.body.ticketId;
+
+    var query = "DELETE FROM ticket WHERE ticketNo = ?";
+    connection.query(query, [ticketId], function(err, result) {
+        if (err) {
+            console.error("Error deleting ticket:", err);
+            res.status(500).send("Error deleting ticket");
+        } else {
+            console.log("Ticket deleted successfully");
+            res.send("Ticket deleted successfully");
+        }
+    });
+};
+
+// getTicketType
+exports.getTicketType = function(req,res){
+
+	connection.query("SELECT * FROM `ticketType` ", function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+}
+
+// CREATE a ticketType
+exports.createTicketType = function(req, res) {
+	var typeId = req.body.typeId;
+	var typeName = req.body.typeName;
+	var cost = req.body.cost;
+  
+	var query = "INSERT INTO ticketType (typeId, typeName, cost) VALUES (?, ?, ?)";
+	connection.query(query, [typeId, typeName, cost], function(err, result) {
+	  if (err) throw err;
+	  res.send("Ticket Type created successfully");
+	});
+  };
+
+  // UPDATE a ticketType
+exports.updateTicketType = function(req, res) {
+	var typeId = req.body.typeId;
+	var typeName = req.body.typeName;
+	var cost = req.body.cost;
+
+	var query = "UPDATE ticketType SET typeName=?, cost=? WHERE typeId=?";
+	connection.query(query, [typeName, cost, typeId], function(err, result) {
+		if (err) {
+            console.error("Error updating Ticket Type:", err);
+            res.status(500).send("Error updating Ticket Type");
+        } else {
+            console.log("Ticket Type updated successfully");
+            res.send("Ticket Type updated successfully");
+        }
+	});
+  };
+  
+   // getSpecificTicketType
+exports.getTicketTypeById = function(req,res,id ){
+	connection.query(`SELECT * FROM ticketType WHERE typeId = ?`,[id] ,function(err, rows, fields) {
+	  if (err) throw err;
+
+	  res.send(JSON.stringify(rows));
+	  
+	});
+	
+ }
+// deleteTicketType
+exports.deleteTicketType = function(req, res) {
+    var typeId = req.body.typeId;
+
+    var query = "DELETE FROM ticketType WHERE typeId = ?";
+    connection.query(query, [typeId], function(err, result) {
+        if (err) {
+            console.error("Error deleting Ticket Type:", err);
+            res.status(500).send("Error deleting Ticket Type");
+        } else {
+            console.log("Ticket Type deleted successfully");
+            res.send("Ticket Type deleted successfully");
+        }
+    });
+};
+
 // getTicketType
 exports.getTicketType = function(req,res){
 
