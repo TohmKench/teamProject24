@@ -1,7 +1,8 @@
 $("document").ready(function() {
 
     displayMovies();
-    
+    populateDrpDwn();
+
  });
  
  
@@ -14,12 +15,9 @@ $("document").ready(function() {
         {
             
             output += `<tr>`;
-            output += `<td>${i+1}</td>`;
-            output += `<td>${data[i].title}</td>`;
+            output += `<td><a href="viewDetails.html?movieId=${data[i].movieId}">${data[i].title}</a></td>`;
             output += `<td>${data[i].language}</td>`;
-            output += `<td>${returnFormattedDate(data[i].releaseDate)}</td>`;
-            output += "<td>" + returnFormattedDateTime(data[i].startTime) + " to " + returnFormattedDateTime(data[i].endTime) + "</td>";
-            output += `<td><button class="btn btn-primary" onclick='bookShow(${data[i].screenId})'>Book now</button></td>`; // send screenId for booking and movieId too?
+            output += `<td><button class="btn btn-primary bookNow" data-screen-id(${data[i].screenId})'>Book now</button></td>`; // send screenId for booking and movieId too?
             output += `</tr>`; 
         }
 
@@ -88,5 +86,22 @@ $("document").ready(function() {
         var formattedDateTime = curr_year + "-" + curr_month + "-" + curr_date + " " + hours + ":" + minutes + ":" + seconds;
         
         return formattedDateTime;
+    }
+
+    function populateDrpDwn()
+    {
+        $.getJSON("http://localhost:3000/movies", function (data) {
+            console.log(data);
+        for (var i = 0; i < data.length; i++) {
+            $("#movieSelect").append("<option>" + data[i].title + "</option>");
+            
+        }
+    });
+    }
+    
+    function redirectToScreenings(movieName) {
+    
+        window.location.href = "viewMovieScreenings.html?movieName=" + movieName;
+        console.log(movieName);
     }
     
