@@ -1,10 +1,21 @@
-/* Add !important to ensure the hover color takes precedence */
 .nav-link {
-    transition: background-color 0.3s, color 0.3s; /* Add transition effect */
-    color: white !important; /* Set initial text color */
+    transition: background-color 0.3s, color 0.3s; 
+    color: white !important; 
 }
 
 .nav-link:hover {
-    background-color: #ffc107; /* Darker yellow */
-    color: black !important; /* Change text color to black on hover */
+    background-color: #ffc107; 
+    color: black !important; 
+}
+
+.btn.btn-primary {
+    transition: background-color 0.3s, color 0.3s; 
+    color: white !important; 
+    background-color: #ffc107; 
+    border-color: #ffc107; 
+}
+
+.btn.btn-primary:hover {
+    background-color: #ffc107; 
+    color: black !important; 
 }
