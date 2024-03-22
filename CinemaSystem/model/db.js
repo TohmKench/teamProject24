@@ -492,3 +492,18 @@ exports.getTheatre = function(req, res) {
     }
   });
 };
+
+// DELETE a user
+exports.deleteAccount = function(req, res) {
+  var userId = req.body.userId;
+
+  var query = "DELETE FROM users WHERE userId = ?";
+  connection.query(query, [userId], function(err, result) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error deleting user");
+    } else {
+      res.status(200).send("User deleted successfully");
+    }
+  });
+};
