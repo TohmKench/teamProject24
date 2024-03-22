@@ -152,6 +152,13 @@ app.post("/register", function (req, res) {
   db.registerUser(req, res);
 });
 
+app.post("/deleteAccount", function (req, res)
+{
+  db.deleteAccount(req, res);
+});
+
+
+
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
 });
