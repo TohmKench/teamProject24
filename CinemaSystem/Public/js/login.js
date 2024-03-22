@@ -27,9 +27,10 @@ $(document).ready(function() {
                 localStorage.setItem('isLoggedIn', 'true'); // Set a local storage item
                 localStorage.setItem('userId', userData.userId);
                 localStorage.setItem('userType', userData.userType);
-        
-                alert("Login successful!");
-                //window.location.href = "http://localhost:3000/home.html";
+                localStorage.setItem('email', userData.email);
+                localStorage.setItem('password', userData.password);
+
+                window.location.href = "http://localhost:3000/home.html";
             } else {
                 localStorage.setItem('isLoggedIn', 'false'); // Set a local storage item
                 alert("Invalid email or password.");
