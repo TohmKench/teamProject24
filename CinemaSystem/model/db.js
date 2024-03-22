@@ -494,11 +494,12 @@ exports.getTheatre = function(req, res) {
 };
 
 // DELETE a user
+// DELETE a user
 exports.deleteAccount = function(req, res) {
-  var userId = req.body.userId;
+  var userID = req.body.userID;
 
-  var query = "DELETE FROM users WHERE userId = ?";
-  connection.query(query, [userId], function(err, result) {
+  var query = "DELETE FROM users WHERE userID = ?";
+  connection.query(query, [userID], function(err, result) {
     if (err) {
       console.log(err);
       res.status(500).send("Error deleting user");
@@ -507,3 +508,39 @@ exports.deleteAccount = function(req, res) {
     }
   });
 };
+
+exports.updateEmail = function(req, res) {
+    console.log(req.body); // Log the request body
+
+	var email = req.body.newEmail;
+  var userID = req.body.userID;
+
+  var query = "UPDATE users SET email=? WHERE userID=?";
+  connection.query(query, [email, userID], function(err, result) {
+    if (err) {
+      console.error("Error updating email:", err);
+      res.status(500).send("Error updating email");
+    } else {
+      console.log("Email updated successfully");
+      res.send("Email updated successfully");
+    }
+  });
+}
+
+exports.updatePassword = function(req, res) {
+  console.log(req.body); // Log the request body
+
+	var password = req.body.newPassword;
+  var userID = req.body.userID;
+
+  var query = "UPDATE users SET password=? WHERE userID=?";
+  connection.query(query, [password, userID], function(err, result) {
+    if (err) {
+      console.error("Error updating password:", err);
+      res.status(500).send("Error updating password");
+    } else {
+      console.log("Password updated successfully");
+      res.send("Password updated successfully");
+    }
+  });
+}
