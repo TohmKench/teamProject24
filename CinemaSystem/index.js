@@ -162,6 +162,15 @@ app.post("/register", function (req, res) {
   db.registerUser(req, res);
 });
 
+
+// Stripe payment
+
+app.get("/payment", function(req, res) {
+  res.sendFile(__dirname + '/payment.html');
+});
+
+
+
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
 });
