@@ -5,29 +5,24 @@ $(document).ready(function() {
 
     $.getJSON("http://localhost:3000/movieScreenings/" + movieName, function(data) {
     
-  console.log(data.length);
+        console.log(data.length);
 
-  var output ="";
-  for(var i=0;i < data.length;i++)
-  {
-   // console.log("hi");
-     console.log(data[0].movieTitle);
-     $("#movieTitle").html(`Screenings for movie: '${data[0].movieTitle}'`);
+        data.forEach(function(item) {
+            console.log(item.movieTitle);
+            $("#movieTitle").html(`Screenings for movie: '${item.movieTitle}'`);
+            $("#displayMovieScreenings").append(`<tr><td>${returnFormattedDate(item.startTime)}</td>
+            <td>${returnFormattedDateTime(item.startTime)}</td><td>${returnFormattedDateTime(item.endTime)}</td>
+            <td>${item.runTime} mins</td><td><button class="btn btn-primary bookNow" data-screen-id="${item.screenId}">Book this screen</button></td></tr>`)
+        });
 
-     output += `<td>${returnFormattedDate(data[i].startTime)}</td>`;
-     output += `<td>${returnFormattedDateTime(data[i].startTime)}</td>`;
-     output += `<td>${returnFormattedDateTime(data[i].endTime)}</td>`;
-     output += `<td>${data[i].runTime} mins</td>`;
-     output += `<td><button class="btn btn-primary" onclick='redirectToBooking(${data[i].screenId})'>Book this screen</button></td>`;
-      output += `</tr>`;
-  }
-
-  $("#displayMovieScreenings").append(output);
-
-
-  });
-
+        $(".bookNow").click(function() {
+            var screenId = $(this).data('screen-id');
+            console.log("Book button clicked");
+            window.location.href = "bookNow.html?screenId=" + screenId;
+        });
+    });
 });
+
 
 function returnFormattedDate(dt) {
   var resultDate = new Date(dt);

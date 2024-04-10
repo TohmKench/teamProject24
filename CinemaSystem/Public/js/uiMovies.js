@@ -11,13 +11,14 @@ $("document").ready(function() {
         console.log(data);
         console.log(data.length);
         var output;
+        var screenId = data[0].screenId;
         for(var i=0;i < data.length;i++)
         {
             
             output += `<tr>`;
-            output += `<td><a href="viewDetails.html?movieId=${data[i].movieId}">${data[i].title}</a></td>`;
-            output += `<td>${data[i].language}</td>`;
-            output += `<td><button class="btn btn-primary bookNow" data-screen-id(${data[i].screenId})'>Book now</button></td>`; // send screenId for booking and movieId too?
+            output += `<td><a href="viewDetails.html?movieId=${data[i].movieId}"><img src="${data[i].imageLink}" style="width: 150px;"></a></td>`;
+            //output += `<td><a href="bookNow.html/?screenId="s")><img src="${data[i].imageLink}" style="width: 150px;"></a></td>`;
+            //output += `<td><button class="btn btn-primary bookNow" data-screen-id(${data[i].screenId})'>Book now</button></td>`; // send screenId for booking and movieId too?
             output += `</tr>`; 
         }
 

@@ -126,8 +126,8 @@ exports.createScreening = function(req, res) {
 	var theatreId = req.body.theatreId;
 	var seatsRemaining = req.body.seatsRemaining;
 
-	var query = "UPDATE screen SET movieId=?, startTime=?, endTime=?, seatsRemaining=?, theatreId=? WHERE screenId=?";
-	connection.query(query, [movieId, startTime, endTime, seatsRemaining, theatreId, screenId], function(err, result) {
+	var query = "UPDATE screen SET movieId=?, startTime=?, endTime=?, seatsRemaining=? WHERE screenId=?";
+	connection.query(query, [movieId, startTime, endTime, seatsRemaining, screenId], function(err, result) {
 		if (err) {
             console.error("Error updating movie:", err);
             res.status(500).send("Error updating movie");
@@ -140,7 +140,7 @@ exports.createScreening = function(req, res) {
 
      // getSpecificScreening
 exports.getSpecificScreening = function(req,res,id ){
-	connection.query(`SELECT * FROM screen WHERE screenId = ?`,[id] ,function(err, rows, fields) {
+	connection.query(`SELECT screen.*, movie.title FROM screen JOIN movie ON screen.movieId = movie.movieId WHERE screenId = ?`,[id] ,function(err, rows, fields) {
 	  if (err) throw err;
 
 	  res.send(JSON.stringify(rows));
@@ -190,6 +190,20 @@ exports.getTickets = function(req,res){
 }
 
 // add Ticket
+exports.createBooking = function(req, res) {
+	  var bookingId = req.body.bookingId;
+	  var bookingDate = req.body.bookingDate;
+    var totalCost = req.body.totalCost;
+    var seats = req.body.seats;
+    var emailAddress = req.body.emailAddress;
+
+  
+	  var query = "INSERT INTO booking (bookingId, bookingDate, totalCost, seats, emailAddress ) VALUES (?, ?, ?, ?, ?)";
+	  connection.query(query, [ bookingId, bookingDate, totalCost, seats, emailAddress], function(err, result) {
+	      if (err) throw err;
+	      res.send("Booking created successfully");
+  	});
+};
 
 exports.createTicket = function(req, res) {
 	var ticketNo = req.body.ticketNo;
@@ -393,7 +407,7 @@ exports.deleteTicketType = function(req, res) {
   // Get movie and screen for User 
   exports.getMoviesScreens = function(req,res){
 
-    connection.query("SELECT m.*, s.startTime, s.endTime FROM movie m INNER JOIN screen s ON m.movieId = s.movieId", function(err, rows, fields) {
+    connection.query("SELECT m.*, s.screenId, s.startTime, s.endTime FROM movie m INNER JOIN screen s ON m.movieId = s.movieId", function(err, rows, fields) {
       if (err) throw err;
   
       res.send(JSON.stringify(rows));

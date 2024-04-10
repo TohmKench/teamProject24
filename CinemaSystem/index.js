@@ -12,6 +12,11 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.post("/createBooking", function (req, res) {
+  db.createBooking(req,res);
+     
+});
+
 app.get("/movies", function (req, res) {
   db.getMovies(req, res);
 });
@@ -42,6 +47,11 @@ app.post("/deleteMovie", function (req, res)
 
 app.get("/screenings", function (req, res) {
   db.getScreenings(req, res);
+});
+
+app.get("/screenings/:id", function (req, res) {
+  var id = req.params.id;
+  db.getSpecificScreening(req, res, id);
 });
 
 
@@ -143,6 +153,15 @@ app.get("/movieScreenings/:movieName", function (req, res) {
   console.log(movieName);
   db.getSpecificMovieScreenings(req, res, movieName);
 });
+
+app.post("/login", function (req, res) {
+  db.loginUser(req, res);
+});
+
+app.post("/register", function (req, res) {
+  db.registerUser(req, res);
+});
+
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
 });
