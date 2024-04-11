@@ -1,5 +1,5 @@
 $("document").ready(function() {
-
+    displayCarouselMovies();
     displayMovies();
     populateDrpDwn();
     $('.carousel').carousel();
@@ -104,5 +104,36 @@ $("document").ready(function() {
     
         window.location.href = "viewMovieScreenings.html?movieName=" + movieName;
         console.log(movieName);
+    }
+
+    function displayCarouselMovies() {
+        $.getJSON("http://localhost:3000/movies", function (data) {
+            console.log(data);
+            console.log(data.length);
+            var carouselIndicators = '';
+            var carouselItems = '';
+    
+            for (var i = 0; i < data.length; i++) {
+                var activeClass = '';
+                if (i === 0) {
+                    activeClass = 'active'; 
+                }
+    
+                carouselIndicators += `<button type="button" data-bs-target="#movieCarousel" data-bs-slide-to="${i}" class="${activeClass}" aria-current="true" aria-label="Slide ${i + 1}"></button>`;
+    
+                carouselItems += `
+                    <div class="carousel-item ${activeClass}">
+                        <img src="img/${data[i].title.replace(/\s+/g, '').toLowerCase()}.jpg" class="d-block w-100 mx-auto" alt="${data[i].title}">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>${data[i].title}</h5>
+                            <button class="btn btn-primary">Book Now</button>
+                        </div>
+                    </div>
+                `;
+            }
+    
+            $('#movieCarouselIndicators').html(carouselIndicators); 
+            $('#movieCarouselInner').html(carouselItems); 
+        });
     }
     
