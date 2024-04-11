@@ -169,6 +169,18 @@ app.get("/payment", function(req, res) {
   res.sendFile(__dirname + '/payment.html');
 });
 
+app.post("/deleteAccount", function (req, res)
+{
+  db.deleteAccount(req, res);
+});
+
+app.post("/updateEmail", function (req, res) {
+  db.updateEmail(req,res);     
+});
+
+app.post("/updatePassword", function (req, res) {
+  db.updatePassword(req,res);     
+});
 
 
 var myServer = app.listen(3000, function () {
