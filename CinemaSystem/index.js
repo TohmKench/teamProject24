@@ -182,6 +182,11 @@ app.post("/updatePassword", function (req, res) {
   db.updatePassword(req,res);     
 });
 
+// Get screenings for a specific date
+app.get("/screeningsByDate/:date", function (req, res) {
+  var date = req.params.date;
+  db.getScreeningsByDate(req, res, date);
+});
 
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
