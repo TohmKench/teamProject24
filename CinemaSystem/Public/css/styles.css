@@ -21,3 +21,32 @@
     background-color: #ffc107; /* Darker yellow */
     color: black !important; /* Change text color to black on hover */
 }
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    box-shadow: none;
+    border-radius: 0.25rem;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 20px 0;
+}
