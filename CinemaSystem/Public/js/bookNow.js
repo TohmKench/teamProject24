@@ -25,7 +25,7 @@ $(document).ready(function(){
             ticketData = data;
             console.log(data);
             data.forEach(function(ticketType) {
-                $('#ticketTypes').append('<div class="form-group"><label for="' + ticketType.typeName + '">' + ticketType.typeName + '</label><input type="number" class="form-control ticket-quantity" data-cost="' + ticketType.cost + '" id="' + ticketType.ticketType + '" min="0" value="0"></div>');
+                $('#ticketTypes').append('<div class="form-group"><label for="' + ticketType.typeName + '">' + ticketType.typeName + '</label><input type="number" class="form-control ticket-quantity" data-cost="' + ticketType.cost + '" id="' + ticketType.typeName + '" min="0" value="0"></div>');
             });
         });
 
@@ -38,36 +38,57 @@ $(document).ready(function(){
             var totalCost = 0;
             var bookingId = 0;
 
+            var selectedTicketTypes = [];
+
+
             $('.ticket-quantity').each(function() {
                 var quantity = parseInt($(this).val());
                 if (!isNaN(quantity) && quantity > 0) {
                     totalSeats += quantity;
                     totalCost += quantity * parseFloat($(this).data('cost'));
+                    var ticketType = {
+                        typeName: $(this).attr('id'), // Assuming the ID of the input element represents the ticket type
+                        quantity: quantity,
+                        screenId: screenId
+                    };
+                    selectedTicketTypes.push(ticketType);
                 }
             });
-            
-    
+            console.log(selectedTicketTypes);
+
             $.getJSON("http://localhost:3000/ticketType" , function(data) {
                 console.log(data);
 
                 console.log(totalCost);
-                $.post("http://localhost:3000/createBooking", {"bookingDate": startDate, "totalCost": totalCost, "seats": totalSeats, "emailAddress" : emailAddress}, function(data){
-                    console.log(data);
-                    bookingId = data.bookingId; // Retrieve the bookingId from the response data
-                    alert("Booking created successfully with ID: " + data.bookingId);
-                    //window.location.href = "home.html";
-                    //createTickets(bookingId, ticketTypes);
-                    var seatsRemaining = currentSeats - totalSeats;
-                    console.log(seatsRemaining);
-                    $.getJSON("http://localhost:3000/screenings/" + screenId, function(data) {
+                if(currentSeats > totalSeats){
+                    $.post("http://localhost:3000/createBooking", {"bookingDate": startDate, "totalCost": totalCost, "seats": totalSeats, "emailAddress" : emailAddress}, function(data){
                         console.log(data);
-                        $.post("http://localhost:3000/updateScreening", {"movieId" : data[0].movieId, "startTime" : data[0].startTime, "endTime" : data[0].endTime, "seatsRemaining" : seatsRemaining, "screenId" : data[0].screenId}, function(data){
+                        bookingId = data.bookingId; // Retrieve the bookingId from the response data
+                        alert("Booking created successfully with ID: " + data.bookingId);
+                        //window.location.href = "home.html";
+                        //createTickets(bookingId, ticketTypes);
+                        var seatsRemaining = currentSeats - totalSeats;
+                        console.log(seatsRemaining);
+                        $.getJSON("http://localhost:3000/screenings/" + screenId, function(data) {
                             console.log(data);
-                            alert("Screening updated successfullywith id: " + data.screenId);   
+                            $.post("http://localhost:3000/updateScreening", {"movieId" : data[0].movieId, "startTime" : data[0].startTime, "endTime" : data[0].endTime, "seatsRemaining" : seatsRemaining, "screenId" : data[0].screenId}, function(data){
+                                console.log(data);
+                                alert("Screening updated successfullywith id: " + data.screenId);   
+                            });
+                            selectedTicketTypes.forEach(function(ticketType) {
+                                $.post("http://localhost:3000/createTicket", {"bookingId": bookingId, "ticketType": ticketType.typeName, "screenId": ticketType.screenId}, function(data){
+                                    console.log(data);
+                                    alert("Ticket created successfully with ID: " + data.ticketId);
+                                });
+                            });  
                         });
-                    });
-                    
-                });
+                                              
+                    }); 
+                }
+                else{
+                    alert("Not enough seats available");
+                }
+                
             });
         });
     });
