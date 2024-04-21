@@ -14,7 +14,7 @@
         var bookingDetails = JSON.parse(localStorage.getItem('bookingDetails'));
 
         // Display total cost on payment page
-        $('#total-amount').text('$' + totalCost);
+        $('#totalAmount').text('€' + totalCost);
 
         // Stripe publishable key
         var stripe = Stripe('pk_test_51OzhFyDUeC3TT3wqiH828xSx3d9a99ON04Jc25Ez0Kox2eNaddyt7t31tdScRaDOIlqplQj73a2P7Z2N5yKu4fsD00ARDVhYJI');
