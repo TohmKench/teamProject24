@@ -545,10 +545,9 @@ exports.updatePassword = function(req, res) {
 // Retrieve screenings by a specific date
 exports.getScreeningsByDate = function(req, res, date) {
   var query = `
-    SELECT screen.*, movie.title AS movieTitle, theatre.name AS theatreName
-    FROM screen
-    INNER JOIN movie ON screen.movieId = movie.movieId
-    INNER JOIN theatre ON screen.theatreId = theatre.theatreId
+    SELECT screen.*, movie.title AS movieTitle
+    FROM screen 
+    JOIN movie ON screen.movieId = movie.movieId
     WHERE DATE(startTime) = ?`;
   connection.query(query, [date], function(err, rows) {
     if (err) {
