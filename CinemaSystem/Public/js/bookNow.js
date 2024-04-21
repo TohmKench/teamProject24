@@ -56,6 +56,14 @@ $(document).ready(function(){
             });
             console.log(selectedTicketTypes);
 
+        // Storing total cost and booking details in local storage for payment page
+        localStorage.setItem('totalCost', totalCost);
+        localStorage.setItem('bookingDetails', JSON.stringify({
+            bookingDate: startDate,
+            totalSeats: totalSeats,
+            emailAddress: emailAddress
+        }));
+            
             $.getJSON("http://localhost:3000/ticketType" , function(data) {
                 console.log(data);
 
