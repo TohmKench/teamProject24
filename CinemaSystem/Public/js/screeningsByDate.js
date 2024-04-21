@@ -1,45 +1,73 @@
 $(document).ready(function() {
-    let currentDate = new Date().toISOString().split('T')[0]; // Start with today's date
+    var currentDate = new Date(); // Start with today's date
 
-    // Function to fetch and display screenings for a specific date
+    // Display formatted date and fetch screenings for the initial date
+    updateDisplayAndFetchScreenings(currentDate);
+
+    // Handler for Previous Day button
+    $("#prevDate").click(function() {
+        currentDate = changeDate(currentDate, -1);
+        updateDisplayAndFetchScreenings(currentDate);
+    });
+
+    // Handler for Next Day button
+    $("#nextDate").click(function() {
+        currentDate = changeDate(currentDate, 1);
+        updateDisplayAndFetchScreenings(currentDate);
+    });
+
+    // Update display date and fetch screenings
+    function updateDisplayAndFetchScreenings(date) {
+        $("#displayDate").html(returnDisplayFormattedDate(date));
+        fetchAndDisplayScreenings(returnFormattedDate(date));
+    }
+
+    // Fetch and display screenings from API
     function fetchAndDisplayScreenings(date) {
-        fetch(`/screeningsByDate/${date}`)
-            .then(response => response.json())
-            .then(screenings => {
-                const tableBody = $('#screeningsByDateTable tbody');
-                tableBody.empty(); // Clear previous entries
+        $.getJSON(`http://localhost:3000/screeningsByDate/${date}`, function(screenings) {
+            const tableBody = $('#screeningsByDateTable tbody');
+            tableBody.empty(); // Clear previous entries
 
-                if (screenings.length === 0) {
-                    tableBody.append('<tr><td colspan="3">No screenings scheduled for this date.</td></tr>');
-                } else {
-                    screenings.forEach(screening => {
-                        // Adjusted to match your data properties
-                        const formattedStartTime = new Date(screening.startTime).toLocaleString();
-                        tableBody.append(`
-                            <tr>
-                                <td>${formattedStartTime}</td>
-                                <td>${screening.movieTitle}</td>
-                                <td>${screening.theatreName}</td>
-                            </tr>
-                        `);
-                    });
-                }
-            })
-            .catch(error => console.error('Error fetching screenings:', error));
+            if (screenings.length === 0) {
+                tableBody.append('<tr><td colspan="3">No screenings scheduled for this date.</td></tr>');
+            } else {
+                screenings.forEach(screening => {
+                    const formattedStartTime = new Date(screening.startTime).toLocaleString();
+                    tableBody.append(`
+                        <tr>
+                            <td>${formattedStartTime}</td>
+                            <td>${screening.movieTitle}</td>
+                            <td>${screening.theatreId}</td>
+                        </tr>
+                    `);
+                });
+            }
+        });
     }
 
-    // Function to change the current date and fetch screenings for the new date
-    function changeDate(days) {
-        const newDate = new Date(currentDate);
+    // Return the date adjusted by a certain number of days
+    function changeDate(date, days) {
+        var newDate = new Date(date);
         newDate.setDate(newDate.getDate() + days);
-        currentDate = newDate.toISOString().split('T')[0];
-        fetchAndDisplayScreenings(currentDate);
+        return newDate;
     }
 
-    // Event listeners for previous and next date buttons
-    $('#prevDate').click(() => changeDate(-1));
-    $('#nextDate').click(() => changeDate(1));
+    // Return a date
+    function returnFormattedDate(date) {
+        var resultDate = new Date(date);
+        var curr_date = resultDate.getDate();
+        var curr_month = resultDate.getMonth() + 1;
+        var curr_year = resultDate.getFullYear();
+        return `${curr_year}-${curr_month < 10 ? '0' + curr_month : curr_month}-${curr_date < 10 ? '0' + curr_date : curr_date}`;
+    }
 
-    // Initially fetch and display screenings for today's date
-    fetchAndDisplayScreenings(currentDate);
+    // Return a string
+    function returnDisplayFormattedDate(date) {
+        var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var dayOfWeek = daysOfWeek[date.getDay()];
+        var curr_date = date.getDate();
+        var curr_month = date.getMonth() + 1;
+        var curr_year = date.getFullYear();
+        return `${dayOfWeek}, ${curr_month < 10 ? '0' + curr_month : curr_month}/${curr_date < 10 ? '0' + curr_date : curr_date}/${curr_year}`;
+    }
 });
