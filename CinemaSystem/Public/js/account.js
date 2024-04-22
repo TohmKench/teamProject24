@@ -66,6 +66,75 @@ $(document).ready(function() {
         }
     });
 
+
+
+$('#editCardDetailsForm').submit(function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Get form inputs
+    var cardno = $('#cardNo').val();
+    var cvv = $('#cvv').val();
+    var expirydate = $('#expiryDate').val();
+
+    // Validate form inputs using Luhn's Algorithm
+    if (cardno && cvv && expirydate && luhnCheck(cardno)) {
+        // If inputs are valid, call editCardDetails function
+        editCardDetails(cardno, cvv, expirydate);
+    } else {
+        // If inputs are not valid, display alert
+        alert('Please fill out all fields correctly. Ensure the card number is valid.');
+    }
+});
+
+function luhnCheck(cardNumber) {
+    let sum = 0;
+    let shouldDouble = false;
+
+    for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(cardNumber.charAt(i));
+
+        if (shouldDouble) {
+            digit *= 2;
+            if (digit > 9) {
+                digit -= 9;
+            }
+        }
+
+        sum += digit;
+        shouldDouble = !shouldDouble;
+    }
+
+    return (sum % 10) === 0;
+}
+
+function editCardDetails(cardno, cvv, expirydate) {
+    // Get the userID from localStorage
+    var userID = localStorage.getItem('userID');
+
+    // Send the card details to the server
+    $.post(
+        "http://localhost:3000/updateCardDetails",
+        {
+            "cardNo": cardno,
+            "cvv": cvv,
+            "expiryDate": expirydate,
+            "userID": userID
+        },
+        function(response) {
+            // Handle successful response
+            console.log(response);
+            alert("Card details updated successfully");
+            // Redirect to account page
+            window.location.href = "http://localhost:3000/account.html";
+        }
+    ).fail(function(jqXHR, textStatus, errorThrown) {
+        // Handle error
+        alert("Error updating card details: " + textStatus + " - " + errorThrown);
+    });
+}
+
+
+
 window.deleteAccount = function(userID) {
     if (confirm("Are you sure you want to delete this Account?")) {
         $.post(
