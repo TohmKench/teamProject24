@@ -524,6 +524,30 @@ exports.updateEmail = function(req, res) {
   });
 }
 
+
+exports.updateCardDetails = function(req, res) {
+  console.log(req.body); // Log the request body
+
+var cardno = req.body.cardno;
+var cvv = req.body.cvv;
+var expirydate = req.body.expirydate;
+var userID = req.body.userID;
+
+
+var query = "UPDATE users SET cardno=?, cvv=?, expirydate =? WHERE userID=?";
+connection.query(query, [cardno, cvv, expirydate, userID], function(err, result) {
+  if (err) {
+    console.error("Error updating card details:", err);
+    res.status(500).send("Error updating card details");
+  } else {
+    console.log("Card details updated successfully");
+    res.send("Card details updated successfully");
+  }
+});
+}
+
+
+
 exports.updatePassword = function(req, res) {
   console.log(req.body); // Log the request body
 
