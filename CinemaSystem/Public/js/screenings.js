@@ -31,11 +31,11 @@ $("document").ready(function() {
         $("#displayScreenings").append(output);
       });
       
-      $.getJSON("http://localhost:3000/theatre", function (data) {
+        $.getJSON("http://localhost:3000/theatre", function (data) {
         
         for (var i = 0; i < data.length; i++) {
            
-            $("#screenTheatre").append(`<option value= ${data[i].capacity} >  ${data[i].theatreId}  </option>`);
+            $("#screenTheatre").append(`<option value="${data[i].theatreId}" data-capacity="${data[i].capacity}">${data[i].theatreId}</option>`);
         }
     });
  
@@ -45,25 +45,59 @@ $("document").ready(function() {
  function addScreening() {
     let startTime = $("#startTime").val();
     let startDate = $("#startDate").val(); 
-    let screenId = $("#screenId").val();
-    let seatsRemaining = $("#screenTheatre").val(); 
-    let theatreId = $("#screenTheatre option:selected").text(); 
-    let endTime = "2024-02-10T21:55:00.000Z"; 
+    let endTime = $("#endTime").val();
+    let seatsRemaining = $("#screenTheatre option:selected").attr('data-capacity');
+    let theatreId = $("#screenTheatre").val();
     let movieId = $("#movieSelect").val();
-    let dateTime = startDate + " " + startTime;    
     
-    console.log(seatsRemaining);
-    console.log(theatreId);
-    
-    
-    $.post(
-        "http://localhost:3000/createScreening", 
-        { "screenId": screenId, "movieId": movieId, "startTime": dateTime, "seatsRemaining": seatsRemaining, "theatreId": theatreId, "endTime":endTime }, // Use formattedDateTime
-        function(data) { 
-            window.location.href="http://localhost:3000/screenings.html";
-            console.log("Screening added successfully"); 
+    let currentDateTime = new Date();
+    let selectedDateTime = new Date(startDate + ' ' + startTime);
+
+    // Checking the startTime if it is in the past
+    if (selectedDateTime < currentDateTime) {
+        alert("Cannot create a screening in the past.");
+        return;
+    }
+
+    // Get screenings from db for checking
+    $.getJSON("http://localhost:3000/screenings", function(allScreenings) {
+        
+        let theatreScreenings = allScreenings.filter(function(screening) {
+            return screening.theatreId == theatreId;
+        });
+
+        // Check if the screen already exists at the same time in the same theatre
+        let overlap = theatreScreenings.some(function(existingScreening) {
+            let existingStartTime = new Date(existingScreening.startTime);
+            let existingEndTime = new Date(existingScreening.endTime);
+            return (selectedDateTime >= existingStartTime && selectedDateTime < existingEndTime) ||
+                   (existingStartTime >= selectedDateTime && existingStartTime < selectedDateTime);
+        });
+
+        // Display an alert
+        if (overlap) {
+            alert("A screening has already been created for this time in this theatre.");
+        } else {
+            // Create a screening if no overlapping
+            let dateTime = startDate + ' ' + startTime;
+            let endDateTime = startDate + ' ' + endTime;
+
+            $.post(
+                "http://localhost:3000/createScreening", 
+                { 
+                    "movieId": movieId, 
+                    "startTime": dateTime, 
+                    "endTime": endDateTime,
+                    "seatsRemaining": seatsRemaining,
+                    "theatreId": theatreId
+                }, 
+                function(data) { 
+                    window.location.href = "http://localhost:3000/screenings.html";
+                    console.log("Screening added successfully"); 
+                }
+            );
         }
-    );
+    });
 }
 
 
