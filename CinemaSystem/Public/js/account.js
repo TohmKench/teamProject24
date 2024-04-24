@@ -66,7 +66,9 @@ $(document).ready(function() {
         }
     });
 
-
+$('#editCardDetails').click(function() {
+        window.location.href = 'editCardDetails.html'; // Redirect to the edit card details page
+ });
 
 $('#editCardDetailsForm').submit(function(e) {
     e.preventDefault(); // Prevent default form submission
