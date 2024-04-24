@@ -36,7 +36,7 @@ $("document").ready(function () {
             </div>
         </header>
 
-        <footer class="bg-dark text-white py-3" style="position: absolute; bottom: 0; width: 100%; height: 60px;">
+        <footer class="bg-dark text-white py-3" style="position: fixed; bottom: 0; width: 100%; height: 60px;">
             <div class="container text-center">
                 <p>&copy; 2024 Cinema System. All rights reserved.</p>
             </div>
