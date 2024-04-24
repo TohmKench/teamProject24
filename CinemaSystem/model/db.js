@@ -407,7 +407,7 @@ exports.deleteTicketType = function(req, res) {
   // Get movie and screen for User 
   exports.getMoviesScreens = function(req,res){
 
-    connection.query("SELECT m.*, s.screenId, s.startTime, s.endTime FROM movie m INNER JOIN screen s ON m.movieId = s.movieId", function(err, rows, fields) {
+    connection.query("SELECT m.*, s.screenId, s.startTime, s.endTime FROM movie m INNER JOIN screen s ON m.movieId = s.movieId GROUP BY m.movieId", function(err, rows, fields) {
       if (err) throw err;
   
       res.send(JSON.stringify(rows));
