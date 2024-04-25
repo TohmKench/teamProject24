@@ -45,13 +45,19 @@ $("document").ready(function() {
  function addScreening() {
     let startTime = $("#startTime").val();
     let startDate = $("#startDate").val(); 
-    let endTime = $("#endTime").val();
+    let currentDateTime = new Date();
+    let selectedDateTime = new Date(startDate + ' ' + startTime);
+    let runtime = $("#movieSelect option:selected").attr('data-runtime');
+    let endTime = new Date(new Date(selectedDateTime).getTime() + parseInt(runtime) * 60 * 1000);
+
+    console.log("Start time: ", startTime );
+    console.log("Run time: ", parseInt(runtime));
+    console.log("End time: ", endTime);
     let seatsRemaining = $("#screenTheatre option:selected").attr('data-capacity');
     let theatreId = $("#screenTheatre").val();
     let movieId = $("#movieSelect").val();
     
-    let currentDateTime = new Date();
-    let selectedDateTime = new Date(startDate + ' ' + startTime);
+
 
     // Checking the startTime if it is in the past
     if (selectedDateTime < currentDateTime) {
@@ -92,7 +98,7 @@ $("document").ready(function() {
                     "theatreId": theatreId
                 }, 
                 function(data) { 
-                    window.location.href = "http://localhost:3000/screenings.html";
+                    //window.location.href = "http://localhost:3000/screenings.html";
                     console.log("Screening added successfully"); 
                 }
             );
@@ -112,7 +118,7 @@ function populateDrpDwn() {
     $.getJSON("http://localhost:3000/movies", function (data) {
         console.log(data);
         for (var i = 0; i < data.length; i++) {
-            $("#movieSelect").append(`<option value="${data[i].movieId}">${data[i].title}</option>`);
+            $("#movieSelect").append(`<option value="${data[i].movieId} " data-runtime=${data[i].runtime} >${data[i].title} (${data[i].runtime} mins)</option>`);
         }
     });
 }
