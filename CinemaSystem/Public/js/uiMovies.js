@@ -126,7 +126,7 @@ $("document").ready(function() {
                         <img src="img/${data[i].title.replace(/\s+/g, '').toLowerCase()}.jpg" class="d-block w-100 mx-auto" alt="${data[i].title}">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>${data[i].title}</h5>
-                            <button class="btn btn-primary">Book Now</button>
+                            <button class="btn btn-primary" onclick="window.location.href = 'viewMovieScreenings.html?movieName=${data[i].title}'">Book Now</button>
                         </div>
                     </div>
                 `;
