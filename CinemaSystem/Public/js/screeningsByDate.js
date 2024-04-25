@@ -38,6 +38,7 @@ $(document).ready(function() {
                             <td>${formattedStartTime}</td>
                             <td>${screening.movieTitle}</td>
                             <td>${screening.theatreId}</td>
+                            <td><button class="btn btn-primary" onclick="window.location.href = 'bookNow.html?screenId=${screening.screenId}'">Book Now</button></td>
                         </tr>
                     `);
                 });
