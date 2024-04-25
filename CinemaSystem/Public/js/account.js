@@ -26,6 +26,7 @@ $("document").ready(function () {
             });
 
             console.log(localStorage.getItem('userID'));
+            console.log(localStorage.getItem('email'));
 });
 
 
@@ -158,83 +159,83 @@ window.deleteAccount = function(userID) {
     }
 }
 
-    function editEmail(newEmail, password) {
-        // Get the stored password
-        var storedPassword = localStorage.getItem('password');
-        var userID = localStorage.getItem('userID'); // Get userID from localStorage
 
-        console.log(newEmail);
-        console.log(password);
-        console.log(storedPassword);
-        // Check if the entered password matches the stored password
-        if (password === storedPassword) {
-            // If the password is correct, send the newEmail to the server
-            $.post(
-                
-                "http://localhost:3000/updateEmail",
-                {
-                    "newEmail": newEmail,
-                    "userID": userID
-                },
-                function(response) {
-                    // Handle successful response
-                    console.log(response);
-                    alert("Email updated successfully");
-                    localStorage.setItem('email', newEmail); // Update email in localStorage
-                    window.location.href="http://localhost:3000/account.html"; // Redirect to account page
-                }
-            ).fail(function(jqXHR, textStatus, errorThrown) {
-                // Handle error
-                alert("Error updating email: " + textStatus + " - " + errorThrown);
-            });
-        } else {
-            // If the password is incorrect, display an alert
-            alert('Incorrect password. Please try again.!');
-        }
+function editEmail(newEmail, password) {
+    // Get the stored password
+    var storedPassword = localStorage.getItem('password');
+    var userID = localStorage.getItem('userID'); // Get userID from localStorage
+
+    console.log(newEmail);
+    console.log(password);
+    console.log(storedPassword);
+    // Check if the entered password matches the stored password
+    if (password === storedPassword) {
+        // If the password is correct, send the newEmail to the server
+        $.post(
+            
+            "http://localhost:3000/updateEmail",
+            {
+                "newEmail": newEmail,
+                "userID": userID
+            },
+            function(response) {
+                // Handle successful response
+                console.log(response);
+                alert("Email updated successfully");
+                localStorage.setItem('email', newEmail); // Update email in localStorage
+                window.location.href="http://localhost:3000/account.html"; // Redirect to account page
+            }
+        ).fail(function(jqXHR, textStatus, errorThrown) {
+            // Handle error
+            alert("Error updating email: " + textStatus + " - " + errorThrown);
+        });
+    } else {
+        // If the password is incorrect, display an alert
+        alert('Incorrect password. Please try again.!');
+    }
+}
+
+
+
+function editPassword(currentPassword, newPassword, confirmPassword) {
+    // Get the stored password and userID
+    var storedPassword = localStorage.getItem('password');
+    var userID = localStorage.getItem('userID');
+
+    if (storedPassword !== currentPassword) {
+        alert('Current password is incorrect. Please try again.!!');
+        return; // Stop the function
     }
 
+    // Check if newPassword and confirmPassword are the same
+    if (newPassword !== confirmPassword) {
+        alert('New password and confirm password do not match. Please try again.');
+        return; // Stop the function
+    }
 
-    function editPassword(currentPassword, newPassword, confirmPassword) {
-        // Get the stored password and userID
-        var storedPassword = localStorage.getItem('password');
-        var userID = localStorage.getItem('userID');
-
-        if (storedPassword !== currentPassword) {
-            alert('Current password is incorrect. Please try again.!!');
-            return; // Stop the function
-        }
-    
-        // Check if newPassword and confirmPassword are the same
-        if (newPassword !== confirmPassword) {
-            alert('New password and confirm password do not match. Please try again.');
-            return; // Stop the function
-        }
-    
-        // Check if newPassword is not equal to storedPassword
-        if (newPassword === storedPassword) {
-            alert('New password must be different from current password. Please try again.');
-            return; // Stop the function
-        }
-        5
-            
-            // If the password is correct, send the newPassword to the server
-            $.post(
-                "http://localhost:3000/updatePassword",
-                {
-                    "newPassword": newPassword,
-                    "userID": userID
-                },
-                function(response) {
-                    // Handle successful response
-                    console.log(response);
-                    alert("Password updated successfully");
-                    localStorage.setItem('password', newPassword); // Update password in localStorage
-                     window.location.href="http://localhost:3000/account.html"; // Redirect to account page
-                }
-            ).fail(function(jqXHR, textStatus, errorThrown) {
-                // Handle error
-                alert("Error updating password: " + textStatus + " - " + errorThrown);
-            });
-        }
-    
-    });
+    // Check if newPassword is not equal to storedPassword
+    if (newPassword === storedPassword) {
+        alert('New password must be different from current password. Please try again.');
+        return; // Stop the function
+    }
+        
+        // If the password is correct, send the newPassword to the server
+        $.post(
+            "http://localhost:3000/updatePassword",
+            {
+                "newPassword": newPassword,
+                "userID": userID
+            },
+            function(response) {
+                // Handle successful response
+                console.log(response);
+                alert("Password updated successfully");
+                localStorage.setItem('password', newPassword); // Update password in localStorage
+                 window.location.href="http://localhost:3000/account.html"; // Redirect to account page
+            }
+        ).fail(function(jqXHR, textStatus, errorThrown) {
+            // Handle error
+            alert("Error updating password: " + textStatus + " - " + errorThrown);
+        });
+    }
+});
