@@ -438,16 +438,31 @@ exports.loginUser = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
+  console.log(`Email: ${email}, Password: ${password}`); // Log the email and password
+
   connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
-    if (err) throw err;
+    if (err) {
+      console.log(err); // Log the error
+      throw err;
+    }
 
     if (rows.length == 0) {
       res.status(400).send('User not found');
     } else {
       var user = rows[0];
 
+      console.log(`Database password: ${user.password}`); // Log the password from the database
+
       if (password == user.password) {
-        res.status(200).send('Login successful');
+        // Retrieve all information for the logged-in user
+        connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
+          if (err) {
+            console.log(err); // Log the error
+            throw err;
+          }
+
+          res.status(200).send(rows);
+        });
       } else {
         res.status(400).send('Incorrect password');
       }
