@@ -1,9 +1,9 @@
 $(document).ready(function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const movieId = urlParams.get('id');
+    const typeId = urlParams.get('id');
 
-    $.getJSON("http://localhost:3000/ticketType/" + movieId, function(data) {
+    $.getJSON("http://localhost:3000/ticketType/" + typeId, function(data) {
         console.log(data[0].movieId);
         
         $('#typeId').val(data[0].typeId);
