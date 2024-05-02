@@ -6,22 +6,58 @@
     <title>Admin Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/slate/bootstrap.min.css" rel="stylesheet">
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="css/styles.css"> 
     <script src="js/admin.js"></script>
     <div id="myDiv">
         <script src="js/Sharednav.js"></script></div>
 </head>
+
+<div id="navBar"></div>
+<div id="header"></div>
+    
 <body>
-    <div class="container my-4">
+    <div class="container my-4 d-flex justify-content-center">
+
         <a href="movies.html" class="btn btn-dark me-2">Movies</a>
         <a href="screenings.html" class="btn btn-dark me-2">Screenings</a>
         <a href="ticket.html" class="btn btn-dark me-2">Ticket</a>
         <a href="ticketType.html" class="btn btn-dark me-2">Ticket Type</a>
     </div>
-    <!-- Add your admin-specific content here -->
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Stats</h5>
+                    <p class="card-text">Some quick stats about site usage here.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Activity</h5>
+                    <p class="card-text">Information on recent admin activities.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User Registrations</h5>
+                    <p class="card-text">New user signups over the past week.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
 </body>
+    <div id="footer"></div>
+
 </html>

@@ -12,6 +12,11 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.post("/createBooking", function (req, res) {
+  db.createBooking(req,res);
+     
+});
+
 app.get("/movies", function (req, res) {
   db.getMovies(req, res);
 });
@@ -44,6 +49,11 @@ app.get("/screenings", function (req, res) {
   db.getScreenings(req, res);
 });
 
+app.get("/screenings/:id", function (req, res) {
+  var id = req.params.id;
+  db.getSpecificScreening(req, res, id);
+});
+
 
 // Update a movie
 app.post("/createScreening", function (req, res) {
@@ -68,8 +78,6 @@ app.post("/deleteScreening", function (req, res)
   db.deleteScreening(req, res);
 });
 
-<<<<<<< Updated upstream
-=======
 
 // get Tickets
 app.get("/tickets", function (req, res) {
@@ -103,7 +111,6 @@ app.post("/deleteTicket", function (req, res)
 });
 
 
->>>>>>> Stashed changes
 // ticketType
 app.get("/ticketType", function (req, res) {
   db.getTicketType(req, res);
@@ -146,6 +153,41 @@ app.get("/movieScreenings/:movieName", function (req, res) {
   console.log(movieName);
   db.getSpecificMovieScreenings(req, res, movieName);
 });
+
+app.post("/login", function (req, res) {
+  db.loginUser(req, res);
+});
+
+app.post("/register", function (req, res) {
+  db.registerUser(req, res);
+});
+
+
+// Stripe payment
+
+app.get("/payment", function(req, res) {
+  res.sendFile(__dirname + '/payment.html');
+});
+
+app.post("/deleteAccount", function (req, res)
+{
+  db.deleteAccount(req, res);
+});
+
+app.post("/updateEmail", function (req, res) {
+  db.updateEmail(req,res);     
+});
+
+app.post("/updatePassword", function (req, res) {
+  db.updatePassword(req,res);     
+});
+
+// Get screenings for a specific date
+app.get("/screeningsByDate/:date", function (req, res) {
+  var date = req.params.date;
+  db.getScreeningsByDate(req, res, date);
+});
+
 var myServer = app.listen(3000, function () {
   console.log("Server listening on port 3000");
 });

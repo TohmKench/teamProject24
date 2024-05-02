@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenings By Date - Cinema System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/slate/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css"> 
+    <script src="js/Sharednav.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+</head>
+
+<script src="js/Sharednav.js"></script>
+
+<div id="navBar"></div>
+<div id="header"></div>
+<body>
+    <hr>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col text-center">
+                <button id="prevDate" class="btn btn-primary"><< Previous Day</button>
+                <button id="nextDate" class="btn btn-primary">Next Day >></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table id="screeningsByDateTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Start Time</th>
+                            <th>Movie</th>
+                            <th>Theatre</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <script src="js/screeningsByDate.js"></script>
+</body>
+    <div id="footer"></div>
+</html>

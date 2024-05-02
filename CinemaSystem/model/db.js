@@ -126,8 +126,8 @@ exports.createScreening = function(req, res) {
 	var theatreId = req.body.theatreId;
 	var seatsRemaining = req.body.seatsRemaining;
 
-	var query = "UPDATE screen SET movieId=?, startTime=?, endTime=?, seatsRemaining=?, theatreId=? WHERE screenId=?";
-	connection.query(query, [movieId, startTime, endTime, seatsRemaining, theatreId, screenId], function(err, result) {
+	var query = "UPDATE screen SET movieId=?, startTime=?, endTime=?, seatsRemaining=? WHERE screenId=?";
+	connection.query(query, [movieId, startTime, endTime, seatsRemaining, screenId], function(err, result) {
 		if (err) {
             console.error("Error updating movie:", err);
             res.status(500).send("Error updating movie");
@@ -140,7 +140,7 @@ exports.createScreening = function(req, res) {
 
      // getSpecificScreening
 exports.getSpecificScreening = function(req,res,id ){
-	connection.query(`SELECT * FROM screen WHERE screenId = ?`,[id] ,function(err, rows, fields) {
+	connection.query(`SELECT screen.*, movie.title FROM screen JOIN movie ON screen.movieId = movie.movieId WHERE screenId = ?`,[id] ,function(err, rows, fields) {
 	  if (err) throw err;
 
 	  res.send(JSON.stringify(rows));
@@ -190,6 +190,20 @@ exports.getTickets = function(req,res){
 }
 
 // add Ticket
+exports.createBooking = function(req, res) {
+	  var bookingId = req.body.bookingId;
+	  var bookingDate = req.body.bookingDate;
+    var totalCost = req.body.totalCost;
+    var seats = req.body.seats;
+    var emailAddress = req.body.emailAddress;
+
+  
+	  var query = "INSERT INTO booking (bookingId, bookingDate, totalCost, seats, emailAddress ) VALUES (?, ?, ?, ?, ?)";
+	  connection.query(query, [ bookingId, bookingDate, totalCost, seats, emailAddress], function(err, result) {
+	      if (err) throw err;
+	      res.send("Booking created successfully");
+  	});
+};
 
 exports.createTicket = function(req, res) {
 	var ticketNo = req.body.ticketNo;
@@ -393,7 +407,7 @@ exports.deleteTicketType = function(req, res) {
   // Get movie and screen for User 
   exports.getMoviesScreens = function(req,res){
 
-    connection.query("SELECT m.*, s.startTime, s.endTime FROM movie m INNER JOIN screen s ON m.movieId = s.movieId", function(err, rows, fields) {
+    connection.query("SELECT m.*, s.screenId, s.startTime, s.endTime FROM movie m INNER JOIN screen s ON m.movieId = s.movieId GROUP BY m.movieId", function(err, rows, fields) {
       if (err) throw err;
   
       res.send(JSON.stringify(rows));
@@ -424,16 +438,31 @@ exports.loginUser = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
+  console.log(`Email: ${email}, Password: ${password}`); // Log the email and password
+
   connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
-    if (err) throw err;
+    if (err) {
+      console.log(err); // Log the error
+      throw err;
+    }
 
     if (rows.length == 0) {
       res.status(400).send('User not found');
     } else {
       var user = rows[0];
 
+      console.log(`Database password: ${user.password}`); // Log the password from the database
+
       if (password == user.password) {
-        res.status(200).send('Login successful');
+        // Retrieve all information for the logged-in user
+        connection.query("SELECT * FROM `users` WHERE `email` = ?", [email], function(err, rows, fields) {
+          if (err) {
+            console.log(err); // Log the error
+            throw err;
+          }
+
+          res.status(200).send(rows);
+        });
       } else {
         res.status(400).send('Incorrect password');
       }
@@ -471,6 +500,98 @@ exports.getTheatre = function(req, res) {
     if (err) {
       console.error("Error getting theatres:", err);
       res.status(500).send("Error getting theatres");
+    } else {
+      res.send(JSON.stringify(rows));
+    }
+  });
+};
+
+// DELETE a user
+exports.deleteAccount = function(req, res) {
+  var userID = req.body.userID;
+
+  var query = "DELETE FROM users WHERE userID = ?";
+  connection.query(query, [userID], function(err, result) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error deleting user");
+    } else {
+      res.status(200).send("User deleted successfully");
+    }
+  });
+};
+
+exports.updateEmail = function(req, res) {
+    console.log(req.body); // Log the request body
+
+	var email = req.body.newEmail;
+  var userID = req.body.userID;
+
+  var query = "UPDATE users SET email=? WHERE userID=?";
+  connection.query(query, [email, userID], function(err, result) {
+    if (err) {
+      console.error("Error updating email:", err);
+      res.status(500).send("Error updating email");
+    } else {
+      console.log("Email updated successfully");
+      res.send("Email updated successfully");
+    }
+  });
+}
+
+
+exports.updateCardDetails = function(req, res) {
+  console.log(req.body); // Log the request body
+
+var cardno = req.body.cardno;
+var cvv = req.body.cvv;
+var expirydate = req.body.expirydate;
+var userID = req.body.userID;
+
+
+var query = "UPDATE users SET cardno=?, cvv=?, expirydate =? WHERE userID=?";
+connection.query(query, [cardno, cvv, expirydate, userID], function(err, result) {
+  if (err) {
+    console.error("Error updating card details:", err);
+    res.status(500).send("Error updating card details");
+  } else {
+    console.log("Card details updated successfully");
+    res.send("Card details updated successfully");
+  }
+});
+}
+
+
+
+exports.updatePassword = function(req, res) {
+  console.log(req.body); // Log the request body
+
+	var password = req.body.newPassword;
+  var userID = req.body.userID;
+
+  var query = "UPDATE users SET password=? WHERE userID=?";
+  connection.query(query, [password, userID], function(err, result) {
+    if (err) {
+      console.error("Error updating password:", err);
+      res.status(500).send("Error updating password");
+    } else {
+      console.log("Password updated successfully");
+      res.send("Password updated successfully");
+    }
+  });
+}
+
+// Retrieve screenings by a specific date
+exports.getScreeningsByDate = function(req, res, date) {
+  var query = `
+    SELECT screen.*, movie.title AS movieTitle
+    FROM screen 
+    JOIN movie ON screen.movieId = movie.movieId
+    WHERE DATE(startTime) = ?`;
+  connection.query(query, [date], function(err, rows) {
+    if (err) {
+      console.error("Error getting screenings by date:", err);
+      res.status(500).send("Error getting screenings by date");
     } else {
       res.send(JSON.stringify(rows));
     }

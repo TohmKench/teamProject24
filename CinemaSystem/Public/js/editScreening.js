@@ -1,53 +1,81 @@
 $(document).ready(function() {
+    populateDropdowns();
+
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const screenId = urlParams.get('id');
 
     $.getJSON("http://localhost:3000/screenings/" + screenId, function(data) {
-        console.log(data[0].screenId);
-        
         $('#screenId').val(data[0].screenId);
-        $('#movieId').val(data[0].movieId);
+        $('#movieSelect').val(data[0].movieId);
         $('#startTime').val(data[0].startTime);
-        $('#endTime').val(data[0].endTime);
-        $('#seatsRemaining').val(data[0].seatsRemaining);
-        $('#theatreId').val(data[0].theatreId);
+        $('#startDate').val(data[0].startDate);
+        $('#screenTheatre').val(data[0].theatreId);
     });
 
-    $('#editScreeningForm').submit(function(event) {
+    $('#addScreeningForm').submit(function(event) {
         event.preventDefault();
-
         updateScreening();
     });
 });
-    function updateScreening() {
-        let screenId = $("#screenId").val();
-        console.log(screenId);
-        let movieId = $("#movieId").val();
-        console.log(movieId);
-        let startTime = $("#startTime").val();
-        let endTime = $("#endTime").val();
-        let seatsRemaining = $("#seatsRemaining").val();
-        let theatreId = $("theatreId").val();
-             
-        $.post(
-            "http://localhost:3000/updateScreening", 
-            {
-                "screenId": screenId,
-                "movieId": movieId,
-                "startTime": startTime,
-                "endTime": endTime,
-                "seatsRemaining": seatsRemaining,
-                "theatreId": theatreId
-            },
-            
-            function(response) { 
-                console.log("Screen updated successfully"); 
-                
-                window.location.href="http://localhost:3000/screenings.html";
-            }
-        );
-    }    
 
-    
+function populateDropdowns() {
+    $.getJSON("http://localhost:3000/movies", function (data) {
+        for (var i = 0; i < data.length; i++) {
+            $("#movieSelect").append(`<option value="${data[i].movieId}">${data[i].title}</option>`);
+        }
+    });
 
+    $.getJSON("http://localhost:3000/theatre", function (data) {
+        for (var i = 0; i < data.length; i++) {
+            $("#screenTheatre").append(`<option value="${data[i].theatreId}" data-capacity="${data[i].capacity}">${data[i].theatreId}</option>`);
+        }
+    });
+}
+
+function updateScreening() {
+
+
+    $.getJSON("http://localhost:3000/theatre", function (data) {
+        
+    for (var i = 0; i < data.length; i++) {
+       
+        $("#screenTheatre").append(`<option value= ${data[i].capacity} >  ${data[i].theatreId}  </option>`);
+    }
+});
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+    let screenId = urlParams.get('id');
+    let movieId = $("#movieSelect").val();
+    let startTime = $("#startTime").val();
+    let startDate = $("#startDate").val();
+    let theatreId = $("#screenTheatre option:selected").text(); 
+
+    let seatsRemaining = $("#screenTheatre option:selected").data('capacity'); 
+
+    let dateTime = startDate + ' ' + startTime;
+
+
+    console.log(screenId);
+    console.log(movieId);
+    console.log(startTime);
+    console.log(startDate);
+    console.log(theatreId);
+    console.log(dateTime);
+
+    $.post(
+        "http://localhost:3000/updateScreening",
+        {
+            "screenId": screenId,
+            "movieId": movieId,
+            "startTime": dateTime,
+            "theatreId": theatreId,
+            "seatsRemaining": seatsRemaining
+        },
+        function(response) { 
+            console.log("Screening updated successfully"); 
+            window.location.href="http://localhost:3000/screenings.html";
+        }
+    );
+}
