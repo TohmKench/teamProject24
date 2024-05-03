@@ -24,7 +24,7 @@ $(document).ready(function() {
                 localStorage.setItem('email', userData.email);
                 localStorage.setItem('password', userData.password);
 
-                //window.location.href = "http://localhost:3000/home.html";
+                window.location.href = "http://localhost:3000/home.html";
             } else {
                 localStorage.setItem('isLoggedIn', 'false'); // Set a local storage item
                 alert("Invalid email or password.");
